@@ -1,0 +1,6 @@
+{
+  "name": "WILDTRAIL - อุปกรณ์เดินป่าและแคมปิ้ง",
+  "description": "ร้านค้าออนไลน์ขายอุปกรณ์เดินป่าและแคมปิ้งคุณภาพ คัดมาเพื่อสายลุย พร้อมบทความแนะนำเส้นทางเดินป่า",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

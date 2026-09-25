@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดสินค้า | WILDTRAIL</title>
+  <meta name="description" content="ดูรายละเอียดอุปกรณ์เดินป่าและแคมปิ้งคุณภาพสูงจาก WILDTRAIL">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='m8 3 4 8 5-5 5 15H2L8 3z'/></svg>">
+
+  <!-- Google Fonts: Kanit (300, 400, 600 only) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/product.css">
+</head>
+<body class="product-page">
+
+  <!-- Sticky Navbar (Same brand header across WILDTRAIL) -->
+  <div class="navbar-wrapper">
+    <nav class="glass-nav" aria-label="เมนูหลัก">
+      <!-- Brand Logo -->
+      <a href="index.html" class="nav-brand" aria-label="WILDTRAIL หน้าแรก">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+          <path d="M4.14 15.08 7.5 10l3 3.5"></path>
+        </svg>
+        <span>WILDTRAIL</span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="index.html#categories">หมวดหมู่สินค้า</a></li>
+        <li><a href="index.html#bestsellers">สินค้าขายดี</a></li>
+        <li><a href="index.html#features">จุดเด่น & บริการ</a></li>
+        <li><a href="index.html#reviews">รีวิวนักเดินป่า</a></li>
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <!-- Search Button -->
+        <button id="btn-search-toggle" class="btn-icon" aria-label="ค้นหาสินค้า" title="ค้นหาสินค้า">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <!-- User Auth Container -->
+        <div id="nav-user-container">
+          <a href="login.html" class="btn-icon" aria-label="เข้าสู่ระบบ หรือ สมัครสมาชิก" title="เข้าสู่ระบบ">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Cart Button -->
+        <button id="btn-cart-toggle" class="btn-icon btn-cart-toggle" aria-label="เปิดตะกร้าสินค้า" title="ตะกร้าสินค้า">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="8" cy="21" r="1"></circle>
+            <circle cx="19" cy="21" r="1"></circle>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+          </svg>
+          <span class="cart-badge">0</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-toggle" class="btn-icon menu-toggle" aria-label="เปิดเมนูมือถือ">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="18" x2="20" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer" class="mobile-drawer" aria-label="เมนูบนมือถือ">
+    <div class="drawer-header">
+      <div class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+        <span>WILDTRAIL</span>
+      </div>
+      <button id="mobile-close" class="btn-icon" aria-label="ปิดเมนู">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="drawer-nav">
+      <a href="index.html">หน้าแรก</a>
+      <a href="index.html#categories">หมวดหมู่สินค้า</a>
+      <a href="index.html#bestsellers">สินค้าขายดี</a>
+      <a href="index.html#features">จุดเด่น & บริการ</a>
+      <a href="index.html#reviews">รีวิวนักเดินป่า</a>
+      <a href="checkout.html">เช็คเอาท์</a>
+      <a href="login.html">เข้าสู่ระบบ</a>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="main-wrapper" id="main-product-container">
+    
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb-nav" aria-label="ตำแหน่งปัจจุบันในเว็บไซต์">
+      <a href="index.html">หน้าแรก</a>
+      <span class="breadcrumb-separator">/</span>
+      <span id="breadcrumb-category">หมวดหมู่สินค้า</span>
+      <span class="breadcrumb-separator">/</span>
+      <span id="breadcrumb-title" class="breadcrumb-current">กำลังโหลด...</span>
+    </nav>
+
+    <!-- Product Not Found State (Hidden by default) -->
+    <div id="product-not-found" class="glass-surface product-not-found-card" style="display: none;">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--color-error);">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <h2 class="type-h2">ไม่พบสินค้าที่คุณกำลังค้นหา</h2>
+      <p style="text-align: center;">ลิงก์สินค้าอาจไม่ถูกต้องหรือสินค้าอาจถูกย้ายออกจากระบบแล้ว</p>
+      <a href="index.html#bestsellers" class="btn btn-primary" style="margin-top: 8px;">
+        กลับไปเลือกชมสินค้าทั้งหมด
+      </a>
+    </div>
+
+    <!-- Product Detail Layout (Desktop 55% / 45%) -->
+    <div id="product-content-section" class="product-detail-layout">
+      
+      <!-- LEFT COLUMN: Image Gallery -->
+      <div class="product-gallery-container">
+        <!-- Main Image Display -->
+        <div class="gallery-main-viewport" id="gallery-main-box" title="คลิกเพื่อขยายดูภาพเต็ม">
+          <img id="gallery-main-img" class="gallery-main-img" src="" alt="ภาพสินค้า">
+          
+          <div class="gallery-zoom-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path><path d="M11 8v6M8 11h6"></path></svg>
+            <span>คลิกเพื่อซูม</span>
+          </div>
+
+          <!-- Mobile navigation arrows -->
+          <button type="button" class="gallery-nav-btn gallery-prev" id="gallery-btn-prev" aria-label="ภาพก่อนหน้า">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="gallery-nav-btn gallery-next" id="gallery-btn-next" aria-label="ภาพถัดไป">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+
+          <!-- Mobile Dots Indicator -->
+          <div class="gallery-dots" id="gallery-dots-container"></div>
+        </div>
+
+        <!-- Thumbnails Strip (3 Angles) -->
+        <div class="gallery-thumbnails-strip" id="gallery-thumbnails-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Product Information & Options (Sticky) -->
+      <div class="glass-surface product-info-sticky">
+        
+        <div class="product-info-header">
+          <span class="product-category-tag" id="product-category-label">หมวดหมู่</span>
+          <h1 class="product-title-h1" id="product-title">ชื่อสินค้า</h1>
+          
+          <!-- Reviews Bar (Click scrolls to reviews) -->
+          <div class="product-reviews-bar">
+            <div id="product-stars-display" style="display: flex; gap: 2px;"></div>
+            <strong id="product-rating-num" style="color: #FFFFFF;">0.0</strong>
+            <a href="#reviews-section" class="reviews-link" id="reviews-scroll-link">(0 รีวิว)</a>
+          </div>
+
+          <!-- Pricing Box -->
+          <div class="product-pricing-box">
+            <span class="price-main" id="product-price-display">฿0</span>
+            <span class="price-compare" id="product-compare-display" style="display: none;">฿0</span>
+            <span class="discount-badge" id="product-discount-badge" style="display: none;">-0%</span>
+          </div>
+        </div>
+
+        <!-- Short Description (2 Lines) -->
+        <p class="product-short-desc" id="product-short-desc"></p>
+
+        <!-- Color Selection -->
+        <div class="selector-group" id="color-selector-group">
+          <div class="selector-header">
+            <span>สี: <strong id="selected-color-name">-</strong></span>
+          </div>
+          <div class="color-swatches-row" id="color-swatches-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Size Selection (Conditional) -->
+        <div class="selector-group" id="size-selector-group" style="display: none;">
+          <div class="selector-header">
+            <span>ขนาด: <strong id="selected-size-name">-</strong></span>
+            <button type="button" class="size-chart-link" id="btn-open-size-chart">ตารางไซซ์</button>
+          </div>
+          <div class="size-buttons-row" id="size-buttons-container">
+            <!-- Populated via JS -->
+          </div>
+          <div class="size-error-msg" id="size-error-msg">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>กรุณาเลือกขนาด</span>
+          </div>
+        </div>
+
+        <!-- Stock Status (Icon + Text) -->
+        <div class="stock-status-box" id="stock-status-box">
+          <span id="stock-status-icon"></span>
+          <span id="stock-status-text">กำลังตรวจสอบสต็อก...</span>
+        </div>
+
+        <!-- Quantity & Action Buttons -->
+        <div class="product-actions-group">
+          <div class="qty-actions-row">
+            <!-- Quantity Stepper -->
+            <div class="action-quantity-stepper">
+              <button type="button" class="action-qty-btn" id="btn-qty-minus" aria-label="ลดจำนวน">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/></svg>
+              </button>
+              <span class="action-qty-val" id="qty-val-display">1</span>
+              <button type="button" class="action-qty-btn" id="btn-qty-plus" aria-label="เพิ่มจำนวน">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+            </div>
+
+            <!-- Main Prominent Add to Cart Button -->
+            <button type="button" class="btn btn-primary btn-add-to-cart-main" id="btn-add-to-cart-main">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              <span id="btn-add-to-cart-text">เพิ่มลงตะกร้า</span>
+            </button>
+
+            <!-- Wishlist Heart Button -->
+            <button type="button" class="btn-wishlist" id="btn-toggle-wishlist" aria-label="บันทึกในรายการที่ชอบ" title="เพิ่มในรายการที่ชอบ">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Secondary "Buy Now" Button -->
+          <button type="button" class="btn btn-secondary btn-buy-now-sec" id="btn-buy-now">
+            <span>ซื้อเลย (ไปชำระเงินทันที)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- Highlights Bar (3 Key USPs with SVG Outline Icons) -->
+        <div class="product-highlights-bar">
+          <div class="highlight-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+            <span>ส่งฟรีเมื่อครบ ฿1,500</span>
+          </div>
+          <div class="highlight-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+            <span>เปลี่ยนคืนใน 15 วัน</span>
+          </div>
+          <div class="highlight-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>รับประกันคุณภาพ 1 ปี</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM SECTION: Tabs (Details / Specs / Shipping) -->
+    <section class="glass-surface product-bottom-section" style="padding: var(--space-4); border-radius: var(--glass-radius);">
+      <div class="tabs-nav-bar" role="tablist">
+        <button type="button" class="tab-nav-btn active" role="tab" aria-selected="true" data-tab="tab-details">รายละเอียดสินค้า</button>
+        <button type="button" class="tab-nav-btn" role="tab" aria-selected="false" data-tab="tab-specs">สเปกสินค้า</button>
+        <button type="button" class="tab-nav-btn" role="tab" aria-selected="false" data-tab="tab-shipping">การจัดส่งและคืนสินค้า</button>
+      </div>
+
+      <!-- Tab 1: Details -->
+      <div id="tab-details" class="tab-panel-content active" role="tabpanel">
+        <h3 class="type-h3" style="margin-bottom: 12px;">จุดเด่นและฟังก์ชันการใช้งาน</h3>
+        <p id="tab-description-text" style="margin-bottom: 20px; line-height: 1.8;"></p>
+        <ul id="tab-features-list" class="category-features-list" style="border: none; padding: 0;"></ul>
+      </div>
+
+      <!-- Tab 2: Specs Table -->
+      <div id="tab-specs" class="tab-panel-content" role="tabpanel">
+        <h3 class="type-h3" style="margin-bottom: 16px;">ข้อมูลจำเพาะเชิงเทคนิค (Specifications)</h3>
+        <table class="specs-table" id="tab-specs-table">
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- Tab 3: Shipping & Returns -->
+      <div id="tab-shipping" class="tab-panel-content" role="tabpanel">
+        <h3 class="type-h3" style="margin-bottom: 16px;">นโยบายการจัดส่งและรับประกัน</h3>
+        <div class="shipping-info-grid">
+          <div class="shipping-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+              การจัดส่งพัสดุ
+            </h4>
+            <p>จัดส่งฟรีทั่วไทยเมื่อสั่งซื้อครบ ฿1,500 ขึ้นไป สั่งก่อน 14:00 น. จัดส่งออกในวันเดียวกัน พัสดุถึงมือภายใน 1-2 วันทำการ มีเลข Tracking ติดตามสถานะเรียลไทม์</p>
+          </div>
+          <div class="shipping-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+              การเปลี่ยนหรือคืนสินค้า
+            </h4>
+            <p>ยินดีรับเปลี่ยนหรือคืนสินค้าภายใน 15 วัน นับจากวันที่ได้รับพัสดุ สินค้าต้องอยู่ในสภาพสมบูรณ์ ไม่ผ่านการใช้งานภาคสนาม พร้อมป้ายและบรรจุภัณฑ์เดิม</p>
+          </div>
+          <div class="shipping-card">
+            <h4>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              การรับประกันศูนย์ไทย
+            </h4>
+            <p>รับประกันข้อบกพร่องจากการผลิต 1 ปีเต็ม ซ่อมฟรีหรือเปลี่ยนชิ้นส่วนโครงสร้าง เช่น เสาเต็นท์ ซิป และตัวล็อก มีทีมช่างดูแลตลอดอายุการใช้งาน</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section class="reviews-section-wrapper" id="reviews-section">
+      <div class="section-header">
+        <div class="tag-eyebrow">REVIEWS</div>
+        <h2 class="type-h1">รีวิวจากนักเดินป่าตัวจริง</h2>
+        <p class="section-desc">ความคิดเห็นและคะแนนความพึงพอใจจากผู้ที่นำอุปกรณ์ชิ้นนี้ไปใช้งานในสนามจริง</p>
+      </div>
+
+      <!-- Rating Summary Card -->
+      <div class="glass-surface reviews-summary-card">
+        <div class="review-score-box">
+          <span class="score-huge" id="reviews-summary-score">4.9</span>
+          <div class="score-stars-row" id="reviews-summary-stars"></div>
+          <span class="score-count-label" id="reviews-summary-count">จาก 128 รีวิว</span>
+        </div>
+
+        <div class="rating-histogram">
+          <div class="rating-bar-row">
+            <span>5 ดาว</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div>
+            <span>85%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>4 ดาว</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 12%;"></div></div>
+            <span>12%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>3 ดาว</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 3%;"></div></div>
+            <span>3%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>2 ดาว</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div>
+            <span>0%</span>
+          </div>
+          <div class="rating-bar-row">
+            <span>1 ดาว</span>
+            <div class="bar-track"><div class="bar-fill" style="width: 0%;"></div></div>
+            <span>0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Sample Customer Reviews -->
+      <div class="customer-reviews-grid" id="customer-reviews-list">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- RELATED PRODUCTS ("สินค้าที่คุณอาจชอบ") -->
+    <section class="related-products-section" id="related-products-section">
+      <div class="section-header">
+        <div class="tag-eyebrow">RECOMMENDED</div>
+        <h2 class="type-h1">สินค้าที่คุณอาจชอบ</h2>
+        <p class="section-desc">อุปกรณ์ที่เข้าชุดและได้รับความนิยมในหมวดหมู่เดียวกัน</p>
+      </div>
+
+      <div class="products-grid" id="related-products-grid">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Sticky Bottom Bar (Appears when scrolled past main Add to Cart button) -->
+  <div class="mobile-sticky-bottom-bar" id="mobile-sticky-bar">
+    <img id="mobile-bar-thumb" class="mobile-bar-thumb" src="" alt="สินค้า">
+    <div class="mobile-bar-info">
+      <span class="mobile-bar-title" id="mobile-bar-title">ชื่อสินค้า</span>
+      <span class="mobile-bar-price" id="mobile-bar-price">฿0</span>
+    </div>
+    <button type="button" class="btn btn-primary" id="btn-mobile-bar-add" style="padding: 8px 18px; font-size: 14px;">
+      เพิ่มลงตะกร้า
+    </button>
+  </div>
+
+  <!-- LIGHTBOX MODAL (Full Screen) -->
+  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="ขยายภาพสินค้า">
+    <button type="button" class="lightbox-close-btn" id="lightbox-close-btn" aria-label="ปิดหน้าต่างภาพ">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <div class="lightbox-img-wrapper" id="lightbox-wrapper">
+      <img id="lightbox-img" class="lightbox-img" src="" alt="ภาพขยาย">
+    </div>
+  </div>
+
+  <!-- SIZE CHART MODAL -->
+  <div class="modal-backdrop" id="size-chart-modal" role="dialog" aria-modal="true" aria-label="ตารางไซซ์">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="type-h3">ตารางไซซ์เสื้อแจ็กเก็ตกันลม (Size Guide)</h3>
+        <button type="button" class="btn-icon" id="size-chart-close-btn" aria-label="ปิดหน้าต่าง">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <p style="font-size: 14px;">หน่วยการวัดเป็นนิ้ว (Inches) ยกเว้นส่วนสูงแนะนำเป็นเซนติเมตร (cm)</p>
+      <div style="overflow-x: auto;">
+        <table class="size-guide-table">
+          <thead>
+            <tr>
+              <th>ไซซ์</th>
+              <th>รอบอก (นิ้ว)</th>
+              <th>ความยาวเสื้อ (นิ้ว)</th>
+              <th>ความยาวแขน (นิ้ว)</th>
+              <th>ส่วนสูงแนะนำ (ซม.)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>S</strong></td>
+              <td>38 - 40</td>
+              <td>27</td>
+              <td>31</td>
+              <td>160 - 170</td>
+            </tr>
+            <tr>
+              <td><strong>M</strong></td>
+              <td>40 - 42</td>
+              <td>28</td>
+              <td>32</td>
+              <td>168 - 176</td>
+            </tr>
+            <tr>
+              <td><strong>L</strong></td>
+              <td>42 - 44</td>
+              <td>29</td>
+              <td>33</td>
+              <td>175 - 183</td>
+            </tr>
+            <tr>
+              <td><strong>XL</strong></td>
+              <td>44 - 46</td>
+              <td>30</td>
+              <td>34</td>
+              <td>180 - 190</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="caption" style="display: flex; align-items: center; gap: 8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>หากสวมใส่เสื้อฟลีซหรือเสื้อกันหนาวหนาไว้ด้านใน แนะนำให้เผื่อ 1 ไซซ์</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER (Zeigarnik Effect: Free Shipping Bar) -->
+  <div id="cart-backdrop" class="cart-backdrop" aria-hidden="true"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="ตะกร้าสินค้าของคุณ">
+    <div class="cart-drawer-header">
+      <h3 style="font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="21" r="1"></circle>
+          <circle cx="19" cy="21" r="1"></circle>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+        </svg>
+        ตะกร้าสินค้าของคุณ
+      </h3>
+      <button id="cart-drawer-close" class="btn-icon" aria-label="ปิดตะกร้าสินค้า" style="width: 36px; height: 36px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Free Shipping Progress Bar -->
+    <div class="free-shipping-card">
+      <div class="free-shipping-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        <span id="free-shipping-text">ซื้อเพิ่มอีก ฿3,000 เพื่อรับสิทธิ์จัดส่งฟรี</span>
+      </div>
+      <div class="free-shipping-progress-track">
+        <div id="free-shipping-progress" class="free-shipping-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="cart-drawer-items" class="cart-drawer-items"></div>
+
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>ยอดรวมสินค้า</span>
+        <span id="cart-drawer-total">฿0</span>
+      </div>
+      <a href="checkout.html" id="cart-drawer-checkout-btn" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center;">
+        ไปชำระเงิน
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Quick Search Modal -->
+  <dialog id="search-modal" class="glass-surface" style="position: fixed; inset: 0; margin: auto; padding: 24px; border: 1px solid var(--glass-border); max-width: 520px; width: 90vw; background: rgba(14,24,18,0.96); color: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 style="font-size: 1.15rem;">ค้นหาอุปกรณ์เดินป่า</h3>
+      <button id="search-modal-close" class="btn-icon" style="width: 32px; height: 32px;" aria-label="ปิดกล่องค้นหา">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <input type="text" id="search-input" class="form-input" placeholder="พิมพ์ชื่ออุปกรณ์ เช่น เต็นท์, เป้, ถุงนอน..." autocomplete="off">
+    <div id="search-results" style="margin-top: 16px; max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;"></div>
+  </dialog>
+
+  <!-- Cart Drawer (Shared) -->
+  <div id="cart-backdrop" class="cart-backdrop" aria-hidden="true"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="ตะกร้าสินค้าของคุณ">
+    <div class="cart-drawer-header">
+      <h3 style="font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="21" r="1"></circle>
+          <circle cx="19" cy="21" r="1"></circle>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+        </svg>
+        ตะกร้าสินค้าของคุณ
+      </h3>
+      <button id="cart-drawer-close" class="btn-icon" aria-label="ปิดตะกร้าสินค้า" style="width: 36px; height: 36px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Zeigarnik Effect: Free Shipping Progress Bar -->
+    <div class="free-shipping-card">
+      <div class="free-shipping-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        <span id="free-shipping-text">ซื้อเพิ่มอีก ฿3,000 เพื่อรับสิทธิ์จัดส่งฟรี</span>
+      </div>
+      <div class="free-shipping-progress-track">
+        <div id="free-shipping-progress" class="free-shipping-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="cart-drawer-items" class="cart-drawer-items">
+      <!-- Populated dynamically via js/shared.js -->
+    </div>
+
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>ยอดรวมสินค้า</span>
+        <span id="cart-drawer-total">฿0</span>
+      </div>
+      <a href="checkout.html" id="cart-drawer-checkout-btn" class="btn btn-primary" style="width: 100%; text-align: center;">
+        ไปชำระเงิน
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="main-wrapper">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="nav-brand" style="margin-bottom: 16px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+            <span>WILDTRAIL</span>
+          </div>
+          <p class="caption" style="margin-bottom: 20px; line-height: 1.7;">
+            ผู้นำเข้าและจัดจำหน่ายอุปกรณ์เดินป่า แคมปิ้ง และเอาท์ดอร์คุณภาพสูง คัดสรรทุกชิ้นเพื่อให้คุณก้าวสู่ธรรมชาติได้อย่างมั่นใจและปลอดภัย
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>หมวดหมู่สินค้า</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#categories">เต็นท์และที่พักแรม</a></li>
+            <li><a href="index.html#bestsellers">เป้เดินป่าทางไกล</a></li>
+            <li><a href="index.html#bestsellers">ถุงนอนและแผ่นรองนอน</a></li>
+            <li><a href="index.html#bestsellers">เสื้อผ้าเอาท์ดอร์</a></li>
+            <li><a href="index.html#categories">เตาและชุดทำอาหาร</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>บริการลูกค้า</h4>
+          <ul class="footer-links">
+            <li><a href="#">นโยบายการจัดส่งสินค้า</a></li>
+            <li><a href="#">เงื่อนไขการรับประกัน 2 ปี</a></li>
+            <li><a href="#">นโยบายการเปลี่ยน/คืนสินค้า</a></li>
+            <li><a href="checkout.html">ติดตามคำสั่งซื้อ</a></li>
+            <li><a href="login.html">เข้าสู่ระบบสมาชิก</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>ติดต่อเรา</h4>
+          <p class="caption" style="line-height: 1.8;">
+            128/9 ถนนสุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110<br>
+            โทร: 02-890-9453 (09:00 - 20:00 น.)<br>
+            อีเมล: support@wildtrail.co.th
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 WILDTRAIL Thailand. สงวนลิขสิทธิ์ทั้งหมด</div>
+        <div style="display: flex; gap: 16px;">
+          <a href="#">นโยบายความเป็นส่วนตัว</a>
+          <span>·</span>
+          <a href="#">ข้อกำหนดการใช้งาน</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/product-detail.js"></script>
+</body>
+</html>

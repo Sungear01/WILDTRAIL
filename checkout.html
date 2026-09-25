@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ชำระเงินและสั่งซื้อสินค้า | WILDTRAIL</title>
+  <meta name="description" content="ชำระเงินค่าสินค้าอุปกรณ์เดินป่า WILDTRAIL สะดวก ปลอดภัย ด้วยระบบเข้ารหัส SSL 256-bit พร้อมตัวเลือก PromptPay และบัตรเครดิต">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='m8 3 4 8 5-5 5 15H2L8 3z'/></svg>">
+
+  <!-- Google Fonts: Kanit (Weights 300, 400, 600 only) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body class="checkout-page-body">
+
+  <!-- Ambient Dark Background Overlay -->
+  <div class="bg-overlay" style="background: radial-gradient(circle at 50% 20%, rgba(20, 45, 32, 0.4) 0%, rgba(6, 14, 10, 0.95) 80%);"></div>
+
+  <!-- Navbar -->
+  <div class="navbar-wrapper">
+    <nav class="glass-nav" aria-label="แถบนำทาง">
+      <a href="index.html" class="nav-brand" aria-label="WILDTRAIL กลับหน้าแรก">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+          <path d="M4.14 15.08 7.5 10l3 3.5"></path>
+        </svg>
+        <span>WILDTRAIL</span>
+      </a>
+
+      <div class="nav-actions">
+        <div id="nav-user-container">
+          <a href="login.html?redirect=checkout.html" class="btn btn-ghost" style="font-size: 14px; gap: 6px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            เข้าสู่ระบบ
+          </a>
+        </div>
+        <button id="btn-cart-toggle" class="btn-icon btn-cart-toggle" aria-label="เปิดตะกร้าสินค้า" title="ตะกร้าสินค้า">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="8" cy="21" r="1"></circle>
+            <circle cx="19" cy="21" r="1"></circle>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+          </svg>
+          <span class="cart-badge">0</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <main class="checkout-wrapper">
+
+    <!-- Stepper Indicator (Zeigarnik Effect: บอกว่าอยู่ขั้นไหนและเหลืออีกกี่ขั้น) -->
+    <div class="checkout-stepper" aria-label="ขั้นตอนการสั่งซื้อ">
+      <div class="step-item active" id="step-nav-1">
+        <span class="step-number">1</span>
+        <span>ข้อมูลจัดส่ง</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item active" id="step-nav-2">
+        <span class="step-number">2</span>
+        <span>การจัดส่ง</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item active" id="step-nav-3">
+        <span class="step-number">3</span>
+        <span>ชำระเงิน</span>
+      </div>
+    </div>
+
+    <!-- 60 / 40 Main Checkout Layout -->
+    <div class="checkout-layout">
+
+      <!-- LEFT COLUMN: Forms (60%) -->
+      <div class="checkout-form-col">
+
+        <!-- Guest or Login Choice Banner (Not forced to register) -->
+        <div class="guest-choice-banner" id="guest-login-banner">
+          <div>
+            <strong>สั่งซื้อด่วนโดยไม่สมัครสมาชิก</strong>
+            <span class="caption" style="display: block;">หรือเข้าสู่ระบบเพื่อสะสมแต้มและใช้คูปองสมาชิก</span>
+          </div>
+          <a href="login.html?redirect=checkout.html" class="btn btn-secondary" style="min-height: 38px; padding: 6px 16px; font-size: 13px;">
+            เข้าสู่ระบบ
+          </a>
+        </div>
+
+        <form id="checkout-form" novalidate>
+
+          <!-- 1. Shipping Address Section -->
+          <div class="glass-surface checkout-section-card">
+            <div class="checkout-section-header">
+              <h2 class="checkout-section-title">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                1. ที่อยู่สำหรับจัดส่งสินค้า
+              </h2>
+              <span class="badge">จำเป็น</span>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group" id="group-ship-name">
+                <label class="form-label" for="ship-name">ชื่อ-นามสกุลผู้รับ</label>
+                <input type="text" id="ship-name" class="form-input" placeholder="เช่น ภานุมาศ ชูเกียรติ" autocomplete="name" required>
+                <div class="form-error-msg">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>กรุณากรอกชื่อ-นามสกุลผู้รับ</span>
+                </div>
+              </div>
+
+              <div class="form-group" id="group-ship-phone">
+                <label class="form-label" for="ship-phone">เบอร์โทรศัพท์ติดต่อ</label>
+                <input type="tel" id="ship-phone" class="form-input" placeholder="081-234-5678" autocomplete="tel" required>
+                <div class="form-error-msg">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>กรุณากรอกเบอร์โทรศัพท์ 10 หลัก</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" id="group-ship-email">
+              <label class="form-label" for="ship-email">อีเมลสำหรับรับใบเสร็จและเลขพัสดุ</label>
+              <input type="email" id="ship-email" class="form-input" placeholder="name@email.com" autocomplete="email" required>
+              <div class="form-error-msg">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>กรุณากรอกอีเมลให้ถูกต้อง</span>
+              </div>
+            </div>
+
+            <div class="form-group" id="group-ship-address">
+              <label class="form-label" for="ship-address">ที่อยู่ (บ้านเลขที่, หมู่บ้าน, ถนน, ซอย)</label>
+              <input type="text" id="ship-address" class="form-input" placeholder="เช่น 128/9 ถนนสุขุมวิท แขวงคลองเตย" autocomplete="street-address" required>
+              <div class="form-error-msg">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>กรุณากรอกที่อยู่สำหรับจัดส่ง</span>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group" id="group-ship-province">
+                <label class="form-label" for="ship-province">จังหวัด</label>
+                <input type="text" id="ship-province" class="form-input" placeholder="เช่น กรุงเทพมหานคร" autocomplete="address-level1" required>
+                <div class="form-error-msg">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>กรุณากรอกจังหวัด</span>
+                </div>
+              </div>
+
+              <div class="form-group" id="group-ship-postal">
+                <label class="form-label" for="ship-postal">รหัสไปรษณีย์</label>
+                <input type="text" id="ship-postal" class="form-input" placeholder="10110" autocomplete="postal-code" maxlength="5" required>
+                <div class="form-error-msg">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>กรุณากรอกรหัสไปรษณีย์ 5 หลัก</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Shipping Method Section -->
+          <div class="glass-surface checkout-section-card">
+            <div class="checkout-section-header">
+              <h2 class="checkout-section-title">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+                2. เลือกรูปแบบการจัดส่ง
+              </h2>
+            </div>
+
+            <div class="radio-cards-grid">
+              <label class="radio-card active" id="label-ship-standard">
+                <div class="radio-card-left">
+                  <input type="radio" name="shippingMethod" value="standard" checked>
+                  <div class="radio-card-info">
+                    <h4>จัดส่งมาตรฐาน (3–5 วันทำการ)</h4>
+                    <p id="ship-standard-desc">ส่งฟรีเมื่อยอดสั่งซื้อครบ ฿3,000</p>
+                  </div>
+                </div>
+                <div class="radio-card-price" id="ship-standard-price">ฟรี</div>
+              </label>
+
+              <label class="radio-card" id="label-ship-express">
+                <div class="radio-card-left">
+                  <input type="radio" name="shippingMethod" value="express">
+                  <div class="radio-card-info">
+                    <h4>จัดส่งด่วนพิเศษ (1–2 วันทำการ)</h4>
+                    <p>รับพัสดุทันใช้ก่อนวันออกทริป พร้อมโทรแจ้งก่อนส่ง</p>
+                  </div>
+                </div>
+                <div class="radio-card-price">+฿60</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. Payment Method Section (Max 3 options) -->
+          <div class="glass-surface checkout-section-card">
+            <div class="checkout-section-header">
+              <h2 class="checkout-section-title">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                3. เลือกวิธีชำระเงิน
+              </h2>
+              <span class="caption" style="display: flex; align-items: center; gap: 4px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                SSL 256-bit
+              </span>
+            </div>
+
+            <div class="radio-cards-grid">
+              <!-- Option 1: PromptPay -->
+              <label class="radio-card active" id="label-pay-promptpay">
+                <div class="radio-card-left">
+                  <input type="radio" name="paymentMethod" value="promptpay" checked>
+                  <div class="radio-card-info">
+                    <h4>พร้อมเพย์ (PromptPay QR)</h4>
+                    <p>สแกนจ่ายได้ทุกแอปธนาคาร ฟรีค่าธรรมเนียม</p>
+                  </div>
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/></svg>
+              </label>
+
+              <!-- Option 2: Credit / Debit Card -->
+              <label class="radio-card" id="label-pay-card">
+                <div class="radio-card-left">
+                  <input type="radio" name="paymentMethod" value="card">
+                  <div class="radio-card-info">
+                    <h4>บัตรเครดิต / บัตรเดบิต</h4>
+                    <p>Visa, Mastercard, JCB พร้อมระบบความปลอดภัย 3D Secure</p>
+                  </div>
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </label>
+
+              <!-- Option 3: Cash on Delivery -->
+              <label class="radio-card" id="label-pay-cod">
+                <div class="radio-card-left">
+                  <input type="radio" name="paymentMethod" value="cod">
+                  <div class="radio-card-info">
+                    <h4>เก็บเงินปลายทาง (COD)</h4>
+                    <p>ชำระเงินกับเจ้าหน้าที่ขนส่งเมื่อได้รับสินค้า</p>
+                  </div>
+                </div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+              </label>
+            </div>
+
+            <!-- Subpanel 1: PromptPay QR Preview -->
+            <div id="subpanel-promptpay" class="payment-subpanel active">
+              <div class="promptpay-box">
+                <div class="qr-placeholder">
+                  <!-- SVG Mock QR Code Pattern -->
+                  <svg width="150" height="150" viewBox="0 0 100 100" fill="#000000">
+                    <rect x="0" y="0" width="30" height="30" fill="#000"/>
+                    <rect x="5" y="5" width="20" height="20" fill="#fff"/>
+                    <rect x="10" y="10" width="10" height="10" fill="#000"/>
+                    <rect x="70" y="0" width="30" height="30" fill="#000"/>
+                    <rect x="75" y="5" width="20" height="20" fill="#fff"/>
+                    <rect x="80" y="10" width="10" height="10" fill="#000"/>
+                    <rect x="0" y="70" width="30" height="30" fill="#000"/>
+                    <rect x="5" y="75" width="20" height="20" fill="#fff"/>
+                    <rect x="10" y="80" width="10" height="10" fill="#000"/>
+                    <!-- QR decorative dots -->
+                    <rect x="40" y="10" width="8" height="8"/>
+                    <rect x="55" y="10" width="8" height="8"/>
+                    <rect x="40" y="30" width="8" height="8"/>
+                    <rect x="50" y="45" width="12" height="12"/>
+                    <rect x="70" y="40" width="8" height="8"/>
+                    <rect x="85" y="40" width="8" height="8"/>
+                    <rect x="40" y="70" width="8" height="8"/>
+                    <rect x="55" y="80" width="16" height="8"/>
+                    <rect x="80" y="75" width="12" height="12"/>
+                  </svg>
+                </div>
+                <div>
+                  <strong style="font-size: 15px; display: block; margin-bottom: 2px;">สแกนเพื่อชำระเงิน</strong>
+                  <span class="caption">เปิดแอปธนาคารของคุณ แล้วสแกนรหัส QR ด้านบน</span>
+                </div>
+                <div class="qr-countdown">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span>รหัส QR จะหมดอายุใน: <strong id="qr-timer">15:00</strong> นาที</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subpanel 2: Credit Card Inputs -->
+            <div id="subpanel-card" class="payment-subpanel">
+              <div class="form-group" id="group-card-number">
+                <label class="form-label" for="card-number">
+                  <span>หมายเลขบัตร</span>
+                  <span id="card-brand-badge" class="badge">VISA / Mastercard</span>
+                </label>
+                <input type="text" id="card-number" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+                <div class="form-error-msg">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>กรุณากรอกหมายเลขบัตร 16 หลัก</span>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group" id="group-card-expiry">
+                  <label class="form-label" for="card-expiry">วันหมดอายุ (MM/YY)</label>
+                  <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
+                  <div class="form-error-msg">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>ระบุวันหมดอายุ เช่น 08/28</span>
+                  </div>
+                </div>
+
+                <div class="form-group" id="group-card-cvv">
+                  <label class="form-label" for="card-cvv">CVV / CVC (3 หลัก)</label>
+                  <input type="password" id="card-cvv" class="form-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
+                  <div class="form-error-msg">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>ระบุรหัส CVV 3 หลัก</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subpanel 3: COD Notice -->
+            <div id="subpanel-cod" class="payment-subpanel">
+              <div class="caption" style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.6;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--color-success); flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <span>กรุณาเตรียมเงินสดพอดีกับยอดชำระเมื่อพนักงานจัดส่งติดต่อ เจ้าหน้าที่จะติดต่อยืนยันก่อนส่ง 1–2 ชั่วโมง</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Submit Order Button (Mobile fallback placement) -->
+          <div style="margin-top: var(--space-4); display: none; @media(max-width: 959px){display:block;}">
+            <button type="submit" id="btn-submit-order-mobile" class="btn btn-primary" style="width: 100%;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              ยืนยันการสั่งซื้อ
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT COLUMN: Sticky Order Summary (40%) -->
+      <aside class="checkout-summary-col" aria-label="สรุปคำสั่งซื้อ">
+        <div class="glass-surface summary-card">
+          <h3 class="summary-title">สรุปคำสั่งซื้อ</h3>
+
+          <!-- Items List -->
+          <div id="checkout-items-list" class="summary-items-list">
+            <!-- Populated via js/checkout.js -->
+          </div>
+
+          <!-- Promo Code Group -->
+          <div class="promo-group">
+            <input type="text" id="promo-input" class="form-input" placeholder="โค้ดส่วนลด (เช่น WILD10)">
+            <button type="button" id="btn-apply-promo" class="btn btn-secondary" style="min-height: 44px; padding: 0 16px;">
+              ใช้งาน
+            </button>
+          </div>
+          <div id="promo-feedback" class="caption" style="display: none; margin-bottom: 8px;"></div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Calculation Rows -->
+          <div class="summary-row">
+            <span>ยอดรวมสินค้า</span>
+            <span id="summary-subtotal">฿0</span>
+          </div>
+
+          <div class="summary-row">
+            <span>ค่าจัดส่ง</span>
+            <span id="summary-shipping">฿0</span>
+          </div>
+
+          <div class="summary-row" id="row-discount" style="display: none; color: var(--color-success);">
+            <span>ส่วนลดคูปอง</span>
+            <span id="summary-discount">-฿0</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Grand Total (Largest typography) -->
+          <div class="summary-row total-row">
+            <span>ยอดชำระสุทธิ</span>
+            <span id="summary-grand-total">฿0</span>
+          </div>
+
+          <!-- Single Prominent CTA Button (Von Restorff) -->
+          <button type="button" id="btn-submit-order" class="btn btn-primary" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span id="btn-submit-order-text">ยืนยันการสั่งซื้อ · ฿0</span>
+          </button>
+
+          <div class="security-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>ชำระเงินปลอดภัยด้วยการเข้ารหัส SSL 256-bit</span>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       ORDER SUCCESS MODAL (Peak-End Rule: Finish on high note)
+       ============================================================ -->
+  <div id="success-modal-backdrop" class="success-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="success-title">
+    <div class="glass-surface success-modal-card">
+      <div class="success-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      <h2 id="success-title" style="font-size: 1.6rem; text-align: center; margin-bottom: 8px;">การสั่งซื้อสำเร็จเรียบร้อย!</h2>
+      <p class="caption" style="text-align: center; margin-bottom: 20px;">
+        ขอบคุณที่ร่วมออกเดินทางไปกับ WILDTRAIL ระบบได้ส่งอีเมลยืนยันคำสั่งซื้อเรียบร้อยแล้ว
+      </p>
+
+      <div class="success-meta-box">
+        <div class="success-meta-row">
+          <span class="caption">หมายเลขคำสั่งซื้อ:</span>
+          <strong id="success-order-id" style="color: #FFFFFF;">#WT-2026-8941</strong>
+        </div>
+        <div class="success-meta-row">
+          <span class="caption">ผู้รับสินค้า:</span>
+          <span id="success-buyer-name">-</span>
+        </div>
+        <div class="success-meta-row">
+          <span class="caption">กำหนดจัดส่งโดยประมาณ:</span>
+          <span id="success-delivery-date" style="color: var(--color-success); font-weight: 600;">-</span>
+        </div>
+        <div class="success-meta-row">
+          <span class="caption">ยอดชำระทั้งสิ้น:</span>
+          <strong id="success-total-paid" style="font-size: 16px; color: #FFFFFF;">-</strong>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="if(window.WILDTRAIL) WILDTRAIL.showToast('สถานะพัสดุ: อยู่ในขั้นตอนการจัดเตรียมอุปกรณ์และแพ็กบรรจุภัณฑ์');">
+          ติดตามพัสดุ
+        </button>
+        <a href="index.html" class="btn btn-primary" style="flex: 1;">
+          กลับหน้าแรก
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer (Shared) -->
+  <div id="cart-backdrop" class="cart-backdrop" aria-hidden="true"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="ตะกร้าสินค้าของคุณ">
+    <div class="cart-drawer-header">
+      <h3 style="font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        ตะกร้าสินค้าของคุณ
+      </h3>
+      <button id="cart-drawer-close" class="btn-icon" aria-label="ปิดตะกร้าสินค้า" style="width: 36px; height: 36px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="free-shipping-card">
+      <div class="free-shipping-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        <span id="free-shipping-text">ซื้อเพิ่มอีก ฿3,000 เพื่อรับสิทธิ์จัดส่งฟรี</span>
+      </div>
+      <div class="free-shipping-progress-track">
+        <div id="free-shipping-progress" class="free-shipping-progress-bar"></div>
+      </div>
+    </div>
+    <div id="cart-drawer-items" class="cart-drawer-items"></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>ยอดรวมสินค้า</span>
+        <span id="cart-drawer-total">฿0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+/* ============================================================
+   WILDTRAIL - LOGIN & REGISTER STYLES (css/login.css)
+   2-Column Desktop, 1-Column Mobile, Inline Validation Feedback
+   ============================================================ */
+
+@import url('tokens.css');
+@import url('style.css');
+
+.auth-page-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container {
+  flex: 1;
+  max-width: 1180px;
+  width: 100%;
+  margin: var(--space-4) auto var(--space-8) auto;
+  padding: 0 var(--space-2);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+/* Left Column: Brand & Benefits Visual */
+.auth-brand-col {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 2px;
+  margin-bottom: var(--space-3);
+  color: var(--color-text-primary);
+}
+
+.auth-brand-col h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  margin-bottom: var(--space-2);
+  line-height: 1.25;
+}
+
+.auth-brand-col p {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.auth-benefits-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-benefits-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--color-text-secondary);
+}
+
+.benefit-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: var(--color-success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Right Column: Glassmorphic Form Card */
+.auth-card {
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: var(--glass-radius);
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Tab Switcher: เข้าสู่ระบบ / สมัครสมาชิก */
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--glass-radius-pill);
+  padding: 4px;
+  margin-bottom: var(--space-4);
+}
+
+.auth-tab-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  padding: 10px 16px;
+  border-radius: var(--glass-radius-pill);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  min-height: 44px;
+}
+
+.auth-tab-btn.active {
+  background: var(--color-primary-bg);
+  color: var(--color-primary-text);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Forms */
+.auth-form-view {
+  display: none;
+}
+
+.auth-form-view.active {
+  display: block;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+  position: relative;
+}
+
+.form-label {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper .form-input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.btn-toggle-pwd {
+  position: absolute;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-toggle-pwd:hover {
+  color: var(--color-text-primary);
+}
+
+/* Inline Validation Message */
+.form-error-msg {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-error);
+  margin-top: 4px;
+}
+
+.form-group.has-error .form-input {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 1px var(--color-error);
+}
+
+.form-group.has-error .form-error-msg {
+  display: flex;
+}
+
+/* Password Strength Meter */
+.strength-meter-wrap {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.strength-track {
+  height: 4px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--glass-radius-pill);
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-text {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Form Helper Row: Remember Me & Forgot Password */
+.form-helper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-caption);
+  margin-bottom: var(--space-3);
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.link-subtle {
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link-subtle:hover {
+  color: var(--color-text-primary);
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Social Google Button */
+.btn-google {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-family: var(--font-family);
+  font-size: var(--font-size-button);
+  min-height: 44px;
+  border-radius: var(--glass-radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-google:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Responsive */
+@media (min-width: 900px) {
+  .auth-container {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+}
