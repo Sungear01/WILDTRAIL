@@ -6,8 +6,8 @@
   <title>ชำระเงินและสั่งซื้อสินค้า | WILDTRAIL</title>
   <meta name="description" content="ชำระเงินค่าสินค้าอุปกรณ์เดินป่า WILDTRAIL สะดวก ปลอดภัย ด้วยระบบเข้ารหัส SSL 256-bit พร้อมตัวเลือก PromptPay และบัตรเครดิต">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='m8 3 4 8 5-5 5 15H2L8 3z'/></svg>">
+  <!-- Favicon (SVG Mountain in Brand Green) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='m8 3 4 8 5-5 5 15H2L8 3z'/></svg>">
 
   <!-- Google Fonts: Kanit (Weights 300, 400, 600 only) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,16 +35,26 @@
       </a>
 
       <div class="nav-actions">
+        <!-- Language Switcher Button (TH / EN) -->
+        <button type="button" id="btn-lang-toggle" class="btn-lang-toggle" aria-label="สลับภาษา / Switch Language (TH / EN)" title="สลับภาษา / Switch Language (TH / EN)" data-i18n-title="navLangTitle" data-i18n-aria-label="navLangTitle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+            <path d="M2 12h20"></path>
+          </svg>
+          <span id="nav-lang-label" class="lang-label">TH</span>
+        </button>
+
         <div id="nav-user-container">
           <a href="login.html?redirect=checkout.html" class="btn btn-ghost" style="font-size: 14px; gap: 6px;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            เข้าสู่ระบบ
+            <span data-i18n="navLogin">เข้าสู่ระบบ</span>
           </a>
         </div>
-        <button id="btn-cart-toggle" class="btn-icon btn-cart-toggle" aria-label="เปิดตะกร้าสินค้า" title="ตะกร้าสินค้า">
+        <button id="btn-cart-toggle" class="btn-icon btn-cart-toggle" aria-label="เปิดตะกร้าสินค้า" title="ตะกร้าสินค้า" data-i18n-title="navCartTitle" data-i18n-aria-label="navCartTitle">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="8" cy="21" r="1"></circle>
             <circle cx="19" cy="21" r="1"></circle>
@@ -62,17 +72,17 @@
     <div class="checkout-stepper" aria-label="ขั้นตอนการสั่งซื้อ">
       <div class="step-item active" id="step-nav-1">
         <span class="step-number">1</span>
-        <span>ข้อมูลจัดส่ง</span>
+        <span data-i18n="stepShipping">ข้อมูลจัดส่ง</span>
       </div>
       <div class="step-divider"></div>
       <div class="step-item active" id="step-nav-2">
         <span class="step-number">2</span>
-        <span>การจัดส่ง</span>
+        <span data-i18n="stepShippingMethod">การจัดส่ง</span>
       </div>
       <div class="step-divider"></div>
       <div class="step-item active" id="step-nav-3">
         <span class="step-number">3</span>
-        <span>ชำระเงิน</span>
+        <span data-i18n="stepPayment">ชำระเงิน</span>
       </div>
     </div>
 
@@ -85,11 +95,11 @@
         <!-- Guest or Login Choice Banner (Not forced to register) -->
         <div class="guest-choice-banner" id="guest-login-banner">
           <div>
-            <strong>สั่งซื้อด่วนโดยไม่สมัครสมาชิก</strong>
-            <span class="caption" style="display: block;">หรือเข้าสู่ระบบเพื่อสะสมแต้มและใช้คูปองสมาชิก</span>
+            <strong data-i18n="guestBuyFast">สั่งซื้อด่วนโดยไม่สมัครสมาชิก</strong>
+            <span class="caption" style="display: block;" data-i18n="guestBuyFastSub">หรือเข้าสู่ระบบเพื่อสะสมแต้มและใช้คูปองสมาชิก</span>
           </div>
           <a href="login.html?redirect=checkout.html" class="btn btn-secondary" style="min-height: 38px; padding: 6px 16px; font-size: 13px;">
-            เข้าสู่ระบบ
+            <span data-i18n="navLogin">เข้าสู่ระบบ</span>
           </a>
         </div>
 
@@ -100,15 +110,15 @@
             <div class="checkout-section-header">
               <h2 class="checkout-section-title">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                1. ที่อยู่สำหรับจัดส่งสินค้า
+                <span data-i18n="step1Title">1. ข้อมูลที่อยู่จัดส่ง</span>
               </h2>
-              <span class="badge">จำเป็น</span>
+              <span class="badge" data-i18n="badgeRequired">จำเป็น</span>
             </div>
 
             <div class="form-grid-2">
               <div class="form-group" id="group-ship-name">
-                <label class="form-label" for="ship-name">ชื่อ-นามสกุลผู้รับ</label>
-                <input type="text" id="ship-name" class="form-input" placeholder="เช่น ภานุมาศ ชูเกียรติ" autocomplete="name" required>
+                <label class="form-label" for="ship-name" data-i18n="shipNameLabel">ชื่อ-นามสกุลผู้รับ</label>
+                <input type="text" id="ship-name" class="form-input" placeholder="เช่น ภานุมาศ ชูเกียรติ" data-i18n-placeholder="shipNamePlaceholder" autocomplete="name" required>
                 <div class="form-error-msg">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                   <span>กรุณากรอกชื่อ-นามสกุลผู้รับ</span>
@@ -116,7 +126,7 @@
               </div>
 
               <div class="form-group" id="group-ship-phone">
-                <label class="form-label" for="ship-phone">เบอร์โทรศัพท์ติดต่อ</label>
+                <label class="form-label" for="ship-phone" data-i18n="shipPhoneLabel">เบอร์โทรศัพท์ติดต่อ</label>
                 <input type="tel" id="ship-phone" class="form-input" placeholder="081-234-5678" autocomplete="tel" required>
                 <div class="form-error-msg">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -126,7 +136,7 @@
             </div>
 
             <div class="form-group" id="group-ship-email">
-              <label class="form-label" for="ship-email">อีเมลสำหรับรับใบเสร็จและเลขพัสดุ</label>
+              <label class="form-label" for="ship-email" data-i18n="shipEmailLabel">อีเมลสำหรับรับใบเสร็จและเลขพัสดุ</label>
               <input type="email" id="ship-email" class="form-input" placeholder="name@email.com" autocomplete="email" required>
               <div class="form-error-msg">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -135,8 +145,8 @@
             </div>
 
             <div class="form-group" id="group-ship-address">
-              <label class="form-label" for="ship-address">ที่อยู่ (บ้านเลขที่, หมู่บ้าน, ถนน, ซอย)</label>
-              <input type="text" id="ship-address" class="form-input" placeholder="เช่น 128/9 ถนนสุขุมวิท แขวงคลองเตย" autocomplete="street-address" required>
+              <label class="form-label" for="ship-address" data-i18n="shipAddressLabel">ที่อยู่ (บ้านเลขที่, หมู่บ้าน, ถนน, ซอย)</label>
+              <input type="text" id="ship-address" class="form-input" placeholder="เช่น 128/9 ถนนสุขุมวิท แขวงคลองเตย" data-i18n-placeholder="shipAddressPlaceholder" autocomplete="street-address" required>
               <div class="form-error-msg">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 <span>กรุณากรอกที่อยู่สำหรับจัดส่ง</span>
@@ -145,8 +155,8 @@
 
             <div class="form-grid-2">
               <div class="form-group" id="group-ship-province">
-                <label class="form-label" for="ship-province">จังหวัด</label>
-                <input type="text" id="ship-province" class="form-input" placeholder="เช่น กรุงเทพมหานคร" autocomplete="address-level1" required>
+                <label class="form-label" for="ship-province" data-i18n="shipProvinceLabel">จังหวัด</label>
+                <input type="text" id="ship-province" class="form-input" placeholder="เช่น กรุงเทพมหานคร" data-i18n-placeholder="shipProvincePlaceholder" autocomplete="address-level1" required>
                 <div class="form-error-msg">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                   <span>กรุณากรอกจังหวัด</span>
@@ -154,7 +164,7 @@
               </div>
 
               <div class="form-group" id="group-ship-postal">
-                <label class="form-label" for="ship-postal">รหัสไปรษณีย์</label>
+                <label class="form-label" for="ship-postal" data-i18n="shipPostalLabel">รหัสไปรษณีย์</label>
                 <input type="text" id="ship-postal" class="form-input" placeholder="10110" autocomplete="postal-code" maxlength="5" required>
                 <div class="form-error-msg">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -169,7 +179,7 @@
             <div class="checkout-section-header">
               <h2 class="checkout-section-title">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
-                2. เลือกรูปแบบการจัดส่ง
+                <span data-i18n="step2Title">2. เลือกรูปแบบการจัดส่ง</span>
               </h2>
             </div>
 
@@ -178,19 +188,19 @@
                 <div class="radio-card-left">
                   <input type="radio" name="shippingMethod" value="standard" checked>
                   <div class="radio-card-info">
-                    <h4>จัดส่งมาตรฐาน (3–5 วันทำการ)</h4>
-                    <p id="ship-standard-desc">ส่งฟรีเมื่อยอดสั่งซื้อครบ ฿3,000</p>
+                    <h4 data-i18n="shipStandardTitle">จัดส่งมาตรฐาน (3–5 วันทำการ)</h4>
+                    <p id="ship-standard-desc" data-i18n="shipStandardDesc">ส่งฟรีเมื่อยอดสั่งซื้อครบ ฿3,000</p>
                   </div>
                 </div>
-                <div class="radio-card-price" id="ship-standard-price">ฟรี</div>
+                <div class="radio-card-price" id="ship-standard-price" data-i18n="orderFree">ฟรี</div>
               </label>
 
               <label class="radio-card" id="label-ship-express">
                 <div class="radio-card-left">
                   <input type="radio" name="shippingMethod" value="express">
                   <div class="radio-card-info">
-                    <h4>จัดส่งด่วนพิเศษ (1–2 วันทำการ)</h4>
-                    <p>รับพัสดุทันใช้ก่อนวันออกทริป พร้อมโทรแจ้งก่อนส่ง</p>
+                    <h4 data-i18n="shipExpressTitle">จัดส่งด่วนพิเศษ (1–2 วันทำการ)</h4>
+                    <p data-i18n="shipExpressDesc">รับพัสดุทันใช้ก่อนวันออกทริป พร้อมโทรแจ้งก่อนส่ง</p>
                   </div>
                 </div>
                 <div class="radio-card-price">+฿60</div>
@@ -203,7 +213,7 @@
             <div class="checkout-section-header">
               <h2 class="checkout-section-title">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                3. เลือกวิธีชำระเงิน
+                <span data-i18n="step3Title">3. เลือกวิธีชำระเงิน</span>
               </h2>
               <span class="caption" style="display: flex; align-items: center; gap: 4px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -217,8 +227,8 @@
                 <div class="radio-card-left">
                   <input type="radio" name="paymentMethod" value="promptpay" checked>
                   <div class="radio-card-info">
-                    <h4>พร้อมเพย์ (PromptPay QR)</h4>
-                    <p>สแกนจ่ายได้ทุกแอปธนาคาร ฟรีค่าธรรมเนียม</p>
+                    <h4 data-i18n="payPromptPayTitle">พร้อมเพย์ (PromptPay QR)</h4>
+                    <p data-i18n="payPromptPayDesc">สแกนจ่ายได้ทุกแอปธนาคาร ฟรีค่าธรรมเนียม</p>
                   </div>
                 </div>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/></svg>
@@ -229,8 +239,8 @@
                 <div class="radio-card-left">
                   <input type="radio" name="paymentMethod" value="card">
                   <div class="radio-card-info">
-                    <h4>บัตรเครดิต / บัตรเดบิต</h4>
-                    <p>Visa, Mastercard, JCB พร้อมระบบความปลอดภัย 3D Secure</p>
+                    <h4 data-i18n="payCardTitle">บัตรเครดิต / บัตรเดบิต</h4>
+                    <p data-i18n="payCardDesc">Visa, Mastercard, JCB พร้อมระบบความปลอดภัย 3D Secure</p>
                   </div>
                 </div>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
@@ -241,8 +251,8 @@
                 <div class="radio-card-left">
                   <input type="radio" name="paymentMethod" value="cod">
                   <div class="radio-card-info">
-                    <h4>เก็บเงินปลายทาง (COD)</h4>
-                    <p>ชำระเงินกับเจ้าหน้าที่ขนส่งเมื่อได้รับสินค้า</p>
+                    <h4 data-i18n="payCodTitle">เก็บเงินปลายทาง (COD)</h4>
+                    <p data-i18n="payCodDesc">ชำระเงินกับเจ้าหน้าที่ขนส่งเมื่อได้รับสินค้า</p>
                   </div>
                 </div>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
@@ -277,12 +287,12 @@
                   </svg>
                 </div>
                 <div>
-                  <strong style="font-size: 15px; display: block; margin-bottom: 2px;">สแกนเพื่อชำระเงิน</strong>
-                  <span class="caption">เปิดแอปธนาคารของคุณ แล้วสแกนรหัส QR ด้านบน</span>
+                  <strong style="font-size: 15px; display: block; margin-bottom: 2px;" data-i18n="qrScanTitle">สแกนเพื่อชำระเงิน</strong>
+                  <span class="caption" data-i18n="qrScanSub">เปิดแอปธนาคารของคุณ แล้วสแกนรหัส QR ด้านบน</span>
                 </div>
                 <div class="qr-countdown">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  <span>รหัส QR จะหมดอายุใน: <strong id="qr-timer">15:00</strong> นาที</span>
+                  <span><span data-i18n="qrExpirePrefix">รหัส QR จะหมดอายุใน: </span><strong id="qr-timer">15:00</strong> <span data-i18n="minuteUnit">นาที</span></span>
                 </div>
               </div>
             </div>
@@ -291,7 +301,7 @@
             <div id="subpanel-card" class="payment-subpanel">
               <div class="form-group" id="group-card-number">
                 <label class="form-label" for="card-number">
-                  <span>หมายเลขบัตร</span>
+                  <span data-i18n="cardNumberLabel">หมายเลขบัตร</span>
                   <span id="card-brand-badge" class="badge">VISA / Mastercard</span>
                 </label>
                 <input type="text" id="card-number" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
@@ -303,7 +313,7 @@
 
               <div class="form-grid-2">
                 <div class="form-group" id="group-card-expiry">
-                  <label class="form-label" for="card-expiry">วันหมดอายุ (MM/YY)</label>
+                  <label class="form-label" for="card-expiry" data-i18n="cardExpiryLabel">วันหมดอายุ (MM/YY)</label>
                   <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
                   <div class="form-error-msg">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -312,7 +322,7 @@
                 </div>
 
                 <div class="form-group" id="group-card-cvv">
-                  <label class="form-label" for="card-cvv">CVV / CVC (3 หลัก)</label>
+                  <label class="form-label" for="card-cvv" data-i18n="cardCvvLabel">CVV / CVC (3 หลัก)</label>
                   <input type="password" id="card-cvv" class="form-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
                   <div class="form-error-msg">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -326,7 +336,7 @@
             <div id="subpanel-cod" class="payment-subpanel">
               <div class="caption" style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.6;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--color-success); flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-                <span>กรุณาเตรียมเงินสดพอดีกับยอดชำระเมื่อพนักงานจัดส่งติดต่อ เจ้าหน้าที่จะติดต่อยืนยันก่อนส่ง 1–2 ชั่วโมง</span>
+                <span data-i18n="codNotice">กรุณาเตรียมเงินสดพอดีกับยอดชำระเมื่อพนักงานจัดส่งติดต่อ เจ้าหน้าที่จะติดต่อยืนยันก่อนส่ง 1–2 ชั่วโมง</span>
               </div>
             </div>
 
@@ -336,7 +346,7 @@
           <div style="margin-top: var(--space-4); display: none; @media(max-width: 959px){display:block;}">
             <button type="submit" id="btn-submit-order-mobile" class="btn btn-primary" style="width: 100%;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              ยืนยันการสั่งซื้อ
+              <span data-i18n="btnConfirmOrder">ยืนยันการสั่งซื้อ</span>
             </button>
           </div>
         </form>
@@ -345,7 +355,7 @@
       <!-- RIGHT COLUMN: Sticky Order Summary (40%) -->
       <aside class="checkout-summary-col" aria-label="สรุปคำสั่งซื้อ">
         <div class="glass-surface summary-card">
-          <h3 class="summary-title">สรุปคำสั่งซื้อ</h3>
+          <h3 class="summary-title" data-i18n="orderSummaryTitle">สรุปคำสั่งซื้อ</h3>
 
           <!-- Items List -->
           <div id="checkout-items-list" class="summary-items-list">
@@ -354,9 +364,9 @@
 
           <!-- Promo Code Group -->
           <div class="promo-group">
-            <input type="text" id="promo-input" class="form-input" placeholder="โค้ดส่วนลด (เช่น WILD10)">
+            <input type="text" id="promo-input" class="form-input" placeholder="โค้ดส่วนลด (เช่น WILD10)" data-i18n-placeholder="promoPlaceholder">
             <button type="button" id="btn-apply-promo" class="btn btn-secondary" style="min-height: 44px; padding: 0 16px;">
-              ใช้งาน
+              <span data-i18n="btnApplyPromo">ใช้งาน</span>
             </button>
           </div>
           <div id="promo-feedback" class="caption" style="display: none; margin-bottom: 8px;"></div>
@@ -365,17 +375,17 @@
 
           <!-- Calculation Rows -->
           <div class="summary-row">
-            <span>ยอดรวมสินค้า</span>
+            <span data-i18n="subtotalLabel">ยอดรวมสินค้า</span>
             <span id="summary-subtotal">฿0</span>
           </div>
 
           <div class="summary-row">
-            <span>ค่าจัดส่ง</span>
+            <span data-i18n="shippingFeeLabel">ค่าจัดส่ง</span>
             <span id="summary-shipping">฿0</span>
           </div>
 
           <div class="summary-row" id="row-discount" style="display: none; color: var(--color-success);">
-            <span>ส่วนลดคูปอง</span>
+            <span data-i18n="discountLabel">ส่วนลดคูปอง</span>
             <span id="summary-discount">-฿0</span>
           </div>
 
@@ -383,7 +393,7 @@
 
           <!-- Grand Total (Largest typography) -->
           <div class="summary-row total-row">
-            <span>ยอดชำระสุทธิ</span>
+            <span data-i18n="totalLabel">ยอดชำระสุทธิ</span>
             <span id="summary-grand-total">฿0</span>
           </div>
 
@@ -395,7 +405,7 @@
 
           <div class="security-note">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-            <span>ชำระเงินปลอดภัยด้วยการเข้ารหัส SSL 256-bit</span>
+            <span data-i18n="securityNote">ชำระเงินปลอดภัยด้วยการเข้ารหัส SSL 256-bit</span>
           </div>
         </div>
       </aside>
@@ -414,36 +424,36 @@
         </svg>
       </div>
 
-      <h2 id="success-title" style="font-size: 1.6rem; text-align: center; margin-bottom: 8px;">การสั่งซื้อสำเร็จเรียบร้อย!</h2>
-      <p class="caption" style="text-align: center; margin-bottom: 20px;">
+      <h2 id="success-title" style="font-size: 1.6rem; text-align: center; margin-bottom: 8px;" data-i18n="orderSuccessTitle">การสั่งซื้อสำเร็จเรียบร้อย!</h2>
+      <p class="caption" style="text-align: center; margin-bottom: 20px;" data-i18n="orderSuccessDesc">
         ขอบคุณที่ร่วมออกเดินทางไปกับ WILDTRAIL ระบบได้ส่งอีเมลยืนยันคำสั่งซื้อเรียบร้อยแล้ว
       </p>
 
       <div class="success-meta-box">
         <div class="success-meta-row">
-          <span class="caption">หมายเลขคำสั่งซื้อ:</span>
+          <span class="caption" data-i18n="orderIdLabel">หมายเลขคำสั่งซื้อ:</span>
           <strong id="success-order-id" style="color: #FFFFFF;">#WT-2026-8941</strong>
         </div>
         <div class="success-meta-row">
-          <span class="caption">ผู้รับสินค้า:</span>
+          <span class="caption" data-i18n="recipientLabel">ผู้รับสินค้า:</span>
           <span id="success-buyer-name">-</span>
         </div>
         <div class="success-meta-row">
-          <span class="caption">กำหนดจัดส่งโดยประมาณ:</span>
+          <span class="caption" data-i18n="estDeliveryLabel">กำหนดจัดส่งโดยประมาณ:</span>
           <span id="success-delivery-date" style="color: var(--color-success); font-weight: 600;">-</span>
         </div>
         <div class="success-meta-row">
-          <span class="caption">ยอดชำระทั้งสิ้น:</span>
+          <span class="caption" data-i18n="totalPaidLabel">ยอดชำระทั้งสิ้น:</span>
           <strong id="success-total-paid" style="font-size: 16px; color: #FFFFFF;">-</strong>
         </div>
       </div>
 
       <div style="display: flex; gap: 12px; margin-top: 24px;">
-        <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="if(window.WILDTRAIL) WILDTRAIL.showToast('สถานะพัสดุ: อยู่ในขั้นตอนการจัดเตรียมอุปกรณ์และแพ็กบรรจุภัณฑ์');">
-          ติดตามพัสดุ
+        <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="if(window.WILDTRAIL) WILDTRAIL.showToast(WILDTRAIL.getLang() === 'en' ? 'Parcel status: Preparing gear and packing' : 'สถานะพัสดุ: อยู่ในขั้นตอนการจัดเตรียมอุปกรณ์และแพ็กบรรจุภัณฑ์');">
+          <span data-i18n="btnTrackOrder">ติดตามพัสดุ</span>
         </button>
         <a href="index.html" class="btn btn-primary" style="flex: 1;">
-          กลับหน้าแรก
+          <span data-i18n="btnBackHome">กลับหน้าแรก</span>
         </a>
       </div>
     </div>

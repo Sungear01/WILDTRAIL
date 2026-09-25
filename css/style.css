@@ -377,11 +377,23 @@ a {
   font-size: 20px;
   font-weight: var(--font-weight-semibold);
   letter-spacing: 1.5px;
-  color: var(--color-text-primary);
+  color: var(--color-brand, #22C55E);
+  text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
 }
 
 .nav-brand svg {
-  color: var(--color-text-primary);
+  color: var(--color-brand, #22C55E);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.nav-brand:hover {
+  color: var(--color-brand-light, #4ADE80);
+}
+
+.nav-brand:hover svg {
+  color: var(--color-brand-light, #4ADE80);
+  transform: translateY(-1px);
 }
 
 /* Category menu max 5 items (Miller's Law) */
@@ -424,7 +436,85 @@ a {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+}
+
+/* Language Switcher Button (TH / EN) */
+.btn-lang-toggle {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: var(--glass-radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  color: var(--color-text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  user-select: none;
+}
+
+.btn-lang-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--glass-border-hover);
+  color: var(--color-brand-light, #4ADE80);
+}
+
+.btn-lang-toggle svg {
+  color: var(--color-brand, #22C55E);
+  transition: transform var(--transition-fast);
+}
+
+.btn-lang-toggle:hover svg {
+  transform: rotate(20deg);
+}
+
+.btn-lang-toggle .lang-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+/* Mobile Drawer Language Row */
+.drawer-lang-row {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-lang-group {
+  display: flex;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius-pill);
+  padding: 2px;
+}
+
+.btn-mobile-lang {
+  padding: 6px 14px;
+  border-radius: var(--glass-radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-family: var(--font-family);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-mobile-lang.active {
+  background: var(--color-brand, #22C55E);
+  color: #060e0a;
+  font-weight: 600;
 }
 
 .cart-badge {

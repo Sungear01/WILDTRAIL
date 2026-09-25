@@ -95,8 +95,9 @@
   // 3. PASSWORD STRENGTH METER
   // ============================================================
   function evaluatePasswordStrength(password) {
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
     if (!password) {
-      return { score: 0, text: 'ความปลอดภัยของรหัสผ่าน: ยังไม่ได้กรอก', color: 'transparent', width: '0%' };
+      return { score: 0, text: isEn ? 'Password strength: Not entered' : 'ความปลอดภัยของรหัสผ่าน: ยังไม่ได้กรอก', color: 'transparent', width: '0%' };
     }
     let score = 0;
     if (password.length >= 8) score += 1;
@@ -106,11 +107,11 @@
     if (/[^A-Za-z0-9]/.test(password)) score += 1;
 
     if (score <= 1) {
-      return { score: 1, text: 'ความปลอดภัย: ระดับเริ่มต้น (ควรเพิ่มความยาวหรือตัวเลข)', color: '#EF4444', width: '25%' };
+      return { score: 1, text: isEn ? 'Strength: Weak (add length or numbers)' : 'ความปลอดภัย: ระดับเริ่มต้น (ควรเพิ่มความยาวหรือตัวเลข)', color: '#EF4444', width: '25%' };
     } else if (score <= 3) {
-      return { score: 2, text: 'ความปลอดภัย: ปานกลาง (สามารถใช้งานได้)', color: '#F59E0B', width: '60%' };
+      return { score: 2, text: isEn ? 'Strength: Medium (good to go)' : 'ความปลอดภัย: ปานกลาง (สามารถใช้งานได้)', color: '#F59E0B', width: '60%' };
     } else {
-      return { score: 3, text: 'ความปลอดภัย: แข็งแรงมาก (ยอดเยี่ยม)', color: '#22C55E', width: '100%' };
+      return { score: 3, text: isEn ? 'Strength: Strong (excellent)' : 'ความปลอดภัย: แข็งแรงมาก (ยอดเยี่ยม)', color: '#22C55E', width: '100%' };
     }
   }
 
@@ -251,9 +252,10 @@
         if (email.includes('ton')) userName = 'ต้น';
 
         // Save user to localStorage (NEVER store password!)
+        const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
         if (window.WILDTRAIL && window.WILDTRAIL.setUser) {
           window.WILDTRAIL.setUser(userName, email);
-          window.WILDTRAIL.showToast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับคุณ ${userName}`);
+          window.WILDTRAIL.showToast(isEn ? `Signed in successfully. Welcome ${userName}` : `เข้าสู่ระบบสำเร็จ ยินดีต้อนรับคุณ ${userName}`);
         }
 
         setTimeout(() => {
@@ -278,7 +280,7 @@
 
       const nameValid = name.length > 0;
       const emailValid = validateEmail(email);
-      const pwdValid = pwd.length >= 8;
+      const pwdValid = pwd.length >= 6;
       const confirmValid = confirm === pwd && confirm.length > 0;
       const termsValid = terms;
 
@@ -296,16 +298,17 @@
         return;
       }
 
+      const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
       btnSubmitRegister.disabled = true;
       btnSubmitRegister.innerHTML = `
         <svg class="spin-animate" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
-        <span>กำลังสร้างบัญชีผู้ใช้...</span>
+        <span>${isEn ? 'Creating account...' : 'กำลังสร้างบัญชีผู้ใช้...'}</span>
       `;
 
       setTimeout(() => {
         if (window.WILDTRAIL && window.WILDTRAIL.setUser) {
           window.WILDTRAIL.setUser(name, email);
-          window.WILDTRAIL.showToast(`สร้างบัญชีสำเร็จ ยินดีต้อนรับคุณ ${name}`);
+          window.WILDTRAIL.showToast(isEn ? `Account created successfully. Welcome ${name}` : `สร้างบัญชีสำเร็จ ยินดีต้อนรับคุณ ${name}`);
         }
 
         setTimeout(() => {
@@ -318,15 +321,16 @@
   // Google Demo Sign In
   if (btnGoogle) {
     btnGoogle.addEventListener('click', () => {
+      const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
       btnGoogle.disabled = true;
       btnGoogle.innerHTML = `
         <svg class="spin-animate" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-        <span>กำลังเชื่อมต่อกับ Google...</span>
+        <span>${isEn ? 'Connecting to Google...' : 'กำลังเชื่อมต่อกับ Google...'}</span>
       `;
       setTimeout(() => {
         if (window.WILDTRAIL && window.WILDTRAIL.setUser) {
-          window.WILDTRAIL.setUser('ต้น', 'ton.outdoor@gmail.com');
-          window.WILDTRAIL.showToast('เข้าสู่ระบบด้วย Google สำเร็จ');
+          window.WILDTRAIL.setUser('Ton', 'ton.outdoor@gmail.com');
+          window.WILDTRAIL.showToast(isEn ? 'Signed in with Google successfully' : 'เข้าสู่ระบบด้วย Google สำเร็จ');
         }
         setTimeout(() => {
           window.location.href = redirectTarget;

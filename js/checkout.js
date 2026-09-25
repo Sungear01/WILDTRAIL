@@ -73,16 +73,39 @@
 
   function renderSummaryItems(cart) {
     if (!checkoutItemsList) return;
-    checkoutItemsList.innerHTML = cart.map(item => `
-      <div class="summary-item-row" style="display: flex; align-items: center; gap: 12px;">
-        ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width: 44px; height: 55px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; background: #E9E8E6;">` : ''}
-        <div class="summary-item-info" style="flex: 1;">
-          <span class="summary-item-title">${item.name}</span>
-          <span class="summary-item-qty">${item.specs ? item.specs + ' · ' : ''}จำนวน: ${item.quantity}</span>
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+    const getLoc = window.getLocalizedProduct || ((p) => p);
+
+    checkoutItemsList.innerHTML = cart.map(item => {
+      let displayName = item.name;
+      let displaySpecs = item.specs || '';
+      if (window.getProductById) {
+        const p = window.getProductById(item.id);
+        if (p) {
+          const lp = getLoc(p, isEn ? 'en' : 'th');
+          displayName = lp.name;
+          if (item.selectedColor) {
+            const cObj = lp.colors.find(c => c.key === item.selectedColor);
+            const colorName = cObj ? cObj.label : item.selectedColorLabel;
+            displaySpecs = isEn ? `Color: ${colorName}` : `สี: ${colorName}`;
+            if (item.selectedSize) {
+              displaySpecs += ` · ${isEn ? 'Size: ' : 'ขนาด: '}${item.selectedSize}`;
+            }
+          }
+        }
+      }
+      const qtyLabel = isEn ? 'Qty' : 'จำนวน';
+      return `
+        <div class="summary-item-row" style="display: flex; align-items: center; gap: 12px;">
+          ${item.image ? `<img src="${item.image}" alt="${displayName}" style="width: 44px; height: 55px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; background: #E9E8E6;">` : ''}
+          <div class="summary-item-info" style="flex: 1;">
+            <span class="summary-item-title">${displayName}</span>
+            <span class="summary-item-qty">${displaySpecs ? displaySpecs + ' · ' : ''}${qtyLabel}: ${item.quantity}</span>
+          </div>
+          <strong>฿${(item.price * item.quantity).toLocaleString()}</strong>
         </div>
-        <strong>฿${(item.price * item.quantity).toLocaleString()}</strong>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function calculateTotals() {
@@ -104,9 +127,12 @@
     }
 
     const grandTotal = Math.max(0, subtotal + shippingCost - discountAmount);
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+    const freeText = isEn ? 'Free' : 'ฟรี';
+    const confirmText = isEn ? 'Confirm Order' : 'ยืนยันการสั่งซื้อ';
 
     if (summarySubtotal) summarySubtotal.textContent = `฿${subtotal.toLocaleString()}`;
-    if (summaryShipping) summaryShipping.textContent = shippingCost === 0 ? 'ฟรี' : `฿${shippingCost}`;
+    if (summaryShipping) summaryShipping.textContent = shippingCost === 0 ? freeText : `฿${shippingCost}`;
 
     if (rowDiscount && summaryDiscount) {
       if (discountAmount > 0) {
@@ -118,7 +144,7 @@
     }
 
     if (summaryGrandTotal) summaryGrandTotal.textContent = `฿${grandTotal.toLocaleString()}`;
-    if (btnSubmitOrderText) btnSubmitOrderText.textContent = `ยืนยันการสั่งซื้อ · ฿${grandTotal.toLocaleString()}`;
+    if (btnSubmitOrderText) btnSubmitOrderText.textContent = `${confirmText} · ฿${grandTotal.toLocaleString()}`;
   }
 
   // ============================================================
@@ -321,10 +347,11 @@
       const grandTotalText = summaryGrandTotal.textContent;
       const orderId = '#WT-2026-' + Math.floor(1000 + Math.random() * 9000);
 
+      const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
       // Estimated date: +3 to 5 days
       const now = new Date();
       now.setDate(now.getDate() + 3);
-      const deliveryDateStr = `${now.getDate()} - ${now.getDate() + 2} ตุลาคม 2026`;
+      const deliveryDateStr = isEn ? `${now.getDate()} - ${now.getDate() + 2} October 2026` : `${now.getDate()} - ${now.getDate() + 2} ตุลาคม 2026`;
 
       const idEl = document.getElementById('success-order-id');
       const buyerEl = document.getElementById('success-buyer-name');
@@ -349,6 +376,13 @@
   if (formCheckout) formCheckout.addEventListener('submit', handleSubmitOrder);
   if (btnSubmitOrder) btnSubmitOrder.addEventListener('click', handleSubmitOrder);
   if (btnSubmitOrderMobile) btnSubmitOrderMobile.addEventListener('click', handleSubmitOrder);
+
+  // Language Change Listener
+  window.addEventListener('wildtrail:langchange', () => {
+    let cart = window.WILDTRAIL ? window.WILDTRAIL.loadCart() : [];
+    renderSummaryItems(cart);
+    calculateTotals();
+  });
 
   // Initialize
   window.addEventListener('DOMContentLoaded', () => {

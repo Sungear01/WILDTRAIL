@@ -263,17 +263,29 @@
     const products = window.WILDTRAIL_PRODUCTS || [];
     if (products.length === 0) return;
 
-    grid.innerHTML = products.map(prod => {
-      const frontImg = (prod.colors && prod.colors[0]?.images && prod.colors[0].images[0]) || '';
+    const lang = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() : 'th';
+    const isEn = lang === 'en';
+    const getLoc = window.getLocalizedProduct || ((p) => p);
+
+    grid.innerHTML = products.map(rawProd => {
+      const prod = getLoc(rawProd, lang);
+      const frontImg = (rawProd.colors && rawProd.colors[0]?.images && rawProd.colors[0].images[0]) || '';
+      const reviewsUnit = isEn ? 'reviews' : 'รีวิว';
+      const addBtnText = isEn ? 'Add to Cart' : 'เพิ่มลงตะกร้า';
+      const viewAria = isEn ? `View details for ${prod.name}` : `ดูรายละเอียด ${prod.name}`;
+      const wishAria = isEn ? `Save ${prod.name} to wishlist` : `บันทึก ${prod.name} ในรายการที่ชอบ`;
+      const wishTitle = isEn ? 'Add to Wishlist' : 'เพิ่มในรายการที่ชอบ';
+      const addAria = isEn ? `Add ${prod.name} to cart` : `เพิ่ม ${prod.name} ลงในตะกร้า`;
+
       return `
         <article class="glass-surface product-card" data-slug="${prod.slug}" data-id="${prod.id}">
-          <button type="button" class="card-wishlist-btn" data-slug="${prod.slug}" aria-label="บันทึก ${prod.name} ในรายการที่ชอบ" title="เพิ่มในรายการที่ชอบ">
+          <button type="button" class="card-wishlist-btn" data-slug="${prod.slug}" aria-label="${wishAria}" title="${wishTitle}">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
             </svg>
           </button>
 
-          <a href="product.html?slug=${prod.slug}" class="product-card-top-link" aria-label="ดูรายละเอียด ${prod.name}">
+          <a href="product.html?slug=${prod.slug}" class="product-card-top-link" aria-label="${viewAria}">
             <div class="product-image-container">
               ${prod.tagBadge ? `
                 <span class="product-tag-badge">
@@ -286,7 +298,7 @@
             <div class="product-rating">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               <strong>${prod.rating.toFixed(1)}</strong>
-              <span>(${prod.reviewCount} รีวิว)</span>
+              <span>(${prod.reviewCount} ${reviewsUnit})</span>
             </div>
             <h3 class="product-title">${prod.name}</h3>
           </a>
@@ -296,9 +308,9 @@
               ${prod.compareAtPrice ? `<span class="price-original">฿${prod.compareAtPrice.toLocaleString()}</span>` : ''}
               <span class="price-current">฿${prod.price.toLocaleString()}</span>
             </div>
-            <button type="button" class="btn btn-secondary btn-add-cart" data-slug="${prod.slug}" aria-label="เพิ่ม ${prod.name} ลงในตะกร้า">
+            <button type="button" class="btn btn-secondary btn-add-cart" data-slug="${prod.slug}" aria-label="${addAria}">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              เพิ่มลงตะกร้า
+              ${addBtnText}
             </button>
           </div>
         </article>
@@ -313,10 +325,14 @@
         btn.classList.toggle('active');
         const isFav = btn.classList.contains('active');
         const slug = btn.getAttribute('data-slug');
-        const prod = window.getProductBySlug(slug);
-        const name = prod ? prod.name : 'สินค้านี้';
+        const rawProd = window.getProductBySlug(slug);
+        const prod = getLoc(rawProd, lang);
+        const name = prod ? prod.name : (isEn ? 'This item' : 'สินค้านี้');
         if (window.WILDTRAIL && window.WILDTRAIL.showToast) {
-          window.WILDTRAIL.showToast(isFav ? `บันทึก "${name}" ในรายการที่ชอบแล้ว` : `นำออกจากรายการที่ชอบแล้ว`);
+          const msg = isFav
+            ? (isEn ? `Saved "${name}" to wishlist` : `บันทึก "${name}" ในรายการที่ชอบแล้ว`)
+            : (isEn ? `Removed "${name}" from wishlist` : `นำออกจากรายการที่ชอบแล้ว`);
+          window.WILDTRAIL.showToast(msg);
         }
       });
     });
@@ -342,6 +358,11 @@
 
   function setupInteractions() {
     renderHomepageProducts();
+
+    // Re-render when language changes
+    window.addEventListener('wildtrail:langchange', () => {
+      renderHomepageProducts();
+    });
 
     // Mobile Drawer
     const mobileToggle = document.getElementById('mobile-toggle');
@@ -379,8 +400,12 @@
         const input = document.getElementById('newsletter-email');
         if (input && input.value.trim()) {
           const email = input.value.trim().toLowerCase();
+          const lang = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() : 'th';
+          const msg = lang === 'en'
+            ? `10% discount code sent to ${email}!`
+            : `รหัสส่วนลด 10% ถูกส่งไปยัง ${email} เรียบร้อยแล้ว`;
           if (window.WILDTRAIL && window.WILDTRAIL.showToast) {
-            window.WILDTRAIL.showToast(`รหัสส่วนลด 10% ถูกส่งไปยัง ${email} เรียบร้อยแล้ว`);
+            window.WILDTRAIL.showToast(msg);
           }
           input.value = '';
         }
@@ -413,32 +438,46 @@
           return;
         }
         const catalog = window.WILDTRAIL_PRODUCTS || [];
-        const matches = catalog.filter(item =>
-          item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query) || item.shortDesc.toLowerCase().includes(query)
-        );
+        const lang = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() : 'th';
+        const isEn = lang === 'en';
+        const getLoc = window.getLocalizedProduct || ((p) => p);
+
+        const matches = catalog.filter(item => {
+          const nameTh = (item.name || '').toLowerCase();
+          const nameEn = (item.nameEn || '').toLowerCase();
+          const catTh = (item.category || '').toLowerCase();
+          const catEn = (item.categoryEn || '').toLowerCase();
+          const descTh = (item.shortDesc || '').toLowerCase();
+          const descEn = (item.shortDescEn || '').toLowerCase();
+          return nameTh.includes(query) || nameEn.includes(query) || catTh.includes(query) || catEn.includes(query) || descTh.includes(query) || descEn.includes(query);
+        });
 
         if (matches.length === 0) {
-          searchResults.innerHTML = '<p class="caption" style="text-align: center; padding: 12px;">ไม่พบสินค้าที่ตรงกับการค้นหา</p>';
+          const noResText = isEn ? 'No products found matching your search' : 'ไม่พบสินค้าที่ตรงกับการค้นหา';
+          searchResults.innerHTML = `<p class="caption" style="text-align: center; padding: 12px;">${noResText}</p>`;
         } else {
-          searchResults.innerHTML = matches.map(item => `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 8px;">
-              <a href="product.html?slug=${item.slug}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
-                <img src="${(item.colors && item.colors[0]?.images && item.colors[0].images[0]) || ''}" alt="${item.name}" style="width: 36px; height: 45px; object-fit: cover; border-radius: 4px; background: #E9E8E6;">
-                <div>
-                  <strong style="font-size: 14px; display: block;">${item.name}</strong>
-                  <span class="caption">หมวดหมู่: ${item.category} · ฿${item.price.toLocaleString()}</span>
-                </div>
-              </a>
-              <a href="product.html?slug=${item.slug}" class="btn btn-secondary" style="min-height: 32px; padding: 4px 12px; font-size: 13px;">
-                ดูสินค้า
-              </a>
-            </div>
-          `).join('');
+          searchResults.innerHTML = matches.map(rawItem => {
+            const item = getLoc(rawItem, lang);
+            const viewText = isEn ? 'View Item' : 'ดูสินค้า';
+            const catLabel = isEn ? 'Category: ' : 'หมวดหมู่: ';
+            return `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 8px;">
+                <a href="product.html?slug=${item.slug}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                  <img src="${(rawItem.colors && rawItem.colors[0]?.images && rawItem.colors[0].images[0]) || ''}" alt="${item.name}" style="width: 36px; height: 45px; object-fit: cover; border-radius: 4px; background: #E9E8E6;">
+                  <div>
+                    <strong style="font-size: 14px; display: block;">${item.name}</strong>
+                    <span class="caption">${catLabel}${item.category} · ฿${item.price.toLocaleString()}</span>
+                  </div>
+                </a>
+                <a href="product.html?slug=${item.slug}" class="btn btn-secondary" style="min-height: 32px; padding: 4px 12px; font-size: 13px;">
+                  ${viewText}
+                </a>
+              </div>
+            `;
+          }).join('');
         }
       });
     }
-
-    // Smooth scroll for internal anchor links
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener('click', function (e) {
         const targetId = this.getAttribute('href');

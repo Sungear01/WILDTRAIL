@@ -41,6 +41,11 @@
   --color-text-muted: rgba(255, 255, 255, 0.55);
   --color-text-dark: #0B1510;
 
+  /* Brand Accent: Wildtrail Forest Green */
+  --color-brand: #22C55E;
+  --color-brand-light: #4ADE80;
+  --color-brand-dark: #16A34A;
+
   /* Primary Accent: Solid White (Von Restorff: Single dominant CTA) */
   --color-primary-bg: #FFFFFF;
   --color-primary-text: #0B1510;

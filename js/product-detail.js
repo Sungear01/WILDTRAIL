@@ -68,16 +68,9 @@
   }
 
   // ============================================================
-  // 3. RENDER STATIC PRODUCT INFORMATION
+  // 3. RENDER BASE PRODUCT INFORMATION
   // ============================================================
-  document.getElementById('breadcrumb-category').textContent = product.category;
-  document.getElementById('breadcrumb-title').textContent = product.name;
-
-  document.getElementById('product-category-label').textContent = product.category;
-  document.getElementById('product-title').textContent = product.name;
   document.getElementById('product-rating-num').textContent = product.rating.toFixed(1);
-  document.getElementById('reviews-scroll-link').textContent = `(${product.reviewCount} รีวิว)`;
-  document.getElementById('product-short-desc').textContent = product.shortDesc;
 
   // Star display in header
   const starsContainer = document.getElementById('product-stars-display');
@@ -101,7 +94,6 @@
   const mobileBarThumb = document.getElementById('mobile-bar-thumb');
   const mobileBarTitle = document.getElementById('mobile-bar-title');
   const mobileBarPrice = document.getElementById('mobile-bar-price');
-  if (mobileBarTitle) mobileBarTitle.textContent = product.name;
   if (mobileBarPrice) mobileBarPrice.textContent = `฿${product.price.toLocaleString()}`;
 
   // ============================================================
@@ -133,16 +125,18 @@
     const buyBtn = document.getElementById('btn-buy-now');
     const mobileAddBtn = document.getElementById('btn-mobile-bar-add');
 
+    const t = window.WILDTRAIL && window.WILDTRAIL.t ? window.WILDTRAIL.t : (k) => k;
+
     stockBox.classList.remove('stock-in', 'stock-low', 'stock-out');
 
     if (stock === 0) {
       stockBox.classList.add('stock-out');
       stockIcon.innerHTML = ICONS.alertCircle;
-      stockText.textContent = 'สินค้าหมดชั่วคราว';
+      stockText.textContent = t('stockOutPrefix');
       if (addBtn) {
         addBtn.setAttribute('disabled', 'true');
         addBtn.style.opacity = '0.5';
-        addBtnText.textContent = 'สินค้าหมด';
+        addBtnText.textContent = t('stockOutPrefix');
       }
       if (buyBtn) {
         buyBtn.setAttribute('disabled', 'true');
@@ -150,16 +144,16 @@
       }
       if (mobileAddBtn) {
         mobileAddBtn.setAttribute('disabled', 'true');
-        mobileAddBtn.textContent = 'สินค้าหมด';
+        mobileAddBtn.textContent = t('stockOutPrefix');
       }
     } else if (stock <= 3) {
       stockBox.classList.add('stock-low');
       stockIcon.innerHTML = ICONS.alertCircle;
-      stockText.textContent = `เหลือเพียง ${stock} ชิ้นเท่านั้น!`;
+      stockText.textContent = t('stockLowPrefix', { count: stock });
       if (addBtn) {
         addBtn.removeAttribute('disabled');
         addBtn.style.opacity = '1';
-        addBtnText.textContent = 'เพิ่มลงตะกร้า';
+        addBtnText.textContent = t('btnAddToCartMain');
       }
       if (buyBtn) {
         buyBtn.removeAttribute('disabled');
@@ -167,16 +161,16 @@
       }
       if (mobileAddBtn) {
         mobileAddBtn.removeAttribute('disabled');
-        mobileAddBtn.textContent = 'เพิ่มลงตะกร้า';
+        mobileAddBtn.textContent = t('btnAddToCartMain');
       }
     } else {
       stockBox.classList.add('stock-in');
       stockIcon.innerHTML = ICONS.checkCircle;
-      stockText.textContent = `มีสินค้าพร้อมส่ง (${stock} ชิ้น)`;
+      stockText.textContent = t('stockInPrefix', { count: stock });
       if (addBtn) {
         addBtn.removeAttribute('disabled');
         addBtn.style.opacity = '1';
-        addBtnText.textContent = 'เพิ่มลงตะกร้า';
+        addBtnText.textContent = t('btnAddToCartMain');
       }
       if (buyBtn) {
         buyBtn.removeAttribute('disabled');
@@ -184,7 +178,7 @@
       }
       if (mobileAddBtn) {
         mobileAddBtn.removeAttribute('disabled');
-        mobileAddBtn.textContent = 'เพิ่มลงตะกร้า';
+        mobileAddBtn.textContent = t('btnAddToCartMain');
       }
     }
 
@@ -205,9 +199,14 @@
     const colorLabel = document.getElementById('selected-color-name');
     if (!container) return;
 
-    colorLabel.textContent = activeColor.label;
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+    const getLoc = window.getLocalizedProduct || ((p) => p);
+    const locProd = getLoc(product, isEn ? 'en' : 'th');
+    const locActiveColor = (locProd.colors && locProd.colors.find(c => c.key === activeColor.key)) || activeColor;
 
-    container.innerHTML = product.colors.map(c => {
+    if (colorLabel) colorLabel.textContent = locActiveColor.label;
+
+    container.innerHTML = locProd.colors.map(c => {
       // Check if out of stock across all variants
       let isSoldOut = false;
       if (product.sizes && product.sizes.length > 0) {
@@ -218,12 +217,13 @@
       }
 
       const isActive = c.key === activeColor.key;
+      const soldOutText = isEn ? ' (Out of stock)' : ' (สินค้าหมด)';
       return `
         <button type="button" 
           class="color-swatch-btn ${isActive ? 'active' : ''} ${isSoldOut ? 'disabled' : ''}" 
           style="background-color: ${c.hex};" 
           data-color="${c.key}" 
-          title="${c.label}${isSoldOut ? ' (สินค้าหมด)' : ''}"
+          title="${c.label}${isSoldOut ? soldOutText : ''}"
           aria-label="${c.label}"
           ${isSoldOut ? 'aria-disabled="true"' : ''}>
         </button>
@@ -258,8 +258,9 @@
       return;
     }
 
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
     if (group) group.style.display = 'flex';
-    if (sizeLabel) sizeLabel.textContent = activeSize || 'ยังไม่ได้เลือก';
+    if (sizeLabel) sizeLabel.textContent = activeSize || (isEn ? 'None selected' : 'ยังไม่ได้เลือก');
 
     container.innerHTML = product.sizes.map(s => {
       const stock = product.stock[`${activeColor.key}_${s}`] || 0;
@@ -326,11 +327,18 @@
   const thumbsContainer = document.getElementById('gallery-thumbnails-container');
   const dotsContainer = document.getElementById('gallery-dots-container');
 
-  const VIEW_LABELS = ['มุมด้านหน้า', 'มุมเฉียง 45°', 'รายละเอียดซูม'];
+  const VIEW_LABELS_TH = ['มุมด้านหน้า', 'มุมเฉียง 45°', 'รายละเอียดซูม'];
+  const VIEW_LABELS_EN = ['Front View', '45° Angle View', 'Zoom Details'];
 
   function updateGalleryImages() {
     if (!activeColor || !activeColor.images) return;
     const images = activeColor.images;
+
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+    const viewLabels = isEn ? VIEW_LABELS_EN : VIEW_LABELS_TH;
+    const getLoc = window.getLocalizedProduct || ((p) => p);
+    const locProd = getLoc(product, isEn ? 'en' : 'th');
+    const locColor = (locProd.colors && locProd.colors.find(c => c.key === activeColor.key)) || activeColor;
 
     // Safety clamp
     if (activeViewIndex >= images.length) activeViewIndex = 0;
@@ -340,7 +348,7 @@
       mainImg.classList.add('fade-out');
       setTimeout(() => {
         mainImg.src = images[activeViewIndex];
-        mainImg.alt = `${product.name} - ${activeColor.label} (${VIEW_LABELS[activeViewIndex]})`;
+        mainImg.alt = `${locProd.name} - ${locColor.label} (${viewLabels[activeViewIndex]})`;
         mainImg.classList.remove('fade-out');
       }, 100);
     }
@@ -353,9 +361,9 @@
     // Render Thumbnails
     if (thumbsContainer) {
       thumbsContainer.innerHTML = images.map((src, idx) => `
-        <button type="button" class="thumb-btn ${idx === activeViewIndex ? 'active' : ''}" data-index="${idx}" aria-label="ดูภาพ ${VIEW_LABELS[idx]}">
-          <img src="${src}" alt="${VIEW_LABELS[idx]}" loading="lazy">
-          <span class="thumb-label">${VIEW_LABELS[idx]}</span>
+        <button type="button" class="thumb-btn ${idx === activeViewIndex ? 'active' : ''}" data-index="${idx}" aria-label="${isEn ? 'View ' + viewLabels[idx] : 'ดูภาพ ' + viewLabels[idx]}">
+          <img src="${src}" alt="${viewLabels[idx]}" loading="lazy">
+          <span class="thumb-label">${viewLabels[idx]}</span>
         </button>
       `).join('');
 
@@ -587,33 +595,8 @@
   }
 
   // ============================================================
-  // 12. BOTTOM TABS (Details, Specs, Shipping)
+  // 12. BOTTOM TABS, REVIEWS, & RELATED PRODUCTS
   // ============================================================
-  // Tab 1: Details
-  const descEl = document.getElementById('tab-description-text');
-  if (descEl) descEl.textContent = product.description;
-
-  const featuresList = document.getElementById('tab-features-list');
-  if (featuresList && product.features) {
-    featuresList.innerHTML = product.features.map(f => `
-      <li>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <span>${f}</span>
-      </li>
-    `).join('');
-  }
-
-  // Tab 2: Specs Table
-  const specsTableBody = document.querySelector('#tab-specs-table tbody');
-  if (specsTableBody && product.specs) {
-    specsTableBody.innerHTML = Object.entries(product.specs).map(([key, val]) => `
-      <tr>
-        <th>${key}</th>
-        <td>${val}</td>
-      </tr>
-    `).join('');
-  }
-
   // Tab Buttons Switcher
   document.querySelectorAll('.tab-nav-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -631,54 +614,26 @@
     });
   });
 
-  // ============================================================
-  // 13. CUSTOMER REVIEWS (Summary + 3 Sample Reviews)
-  // ============================================================
-  document.getElementById('reviews-summary-score').textContent = product.rating.toFixed(1);
-  document.getElementById('reviews-summary-count').textContent = `จาก ${product.reviewCount} รีวิว`;
-  const summaryStars = document.getElementById('reviews-summary-stars');
-  if (summaryStars) {
-    summaryStars.innerHTML = Array(5).fill(ICONS.star).join('');
-  }
-
-  const reviewsContainer = document.getElementById('customer-reviews-list');
-  if (reviewsContainer && product.reviews) {
-    reviewsContainer.innerHTML = product.reviews.map(r => `
-      <div class="glass-surface customer-review-card">
-        <div class="review-meta-row">
-          <div>
-            <div style="display: flex; gap: 2px; color: #FBBF24; margin-bottom: 4px;">
-              ${Array(r.rating).fill(ICONS.star).join('')}
-            </div>
-            <strong style="font-size: 14px; display: block;">${r.author}</strong>
-            <span class="caption">${r.location} · ${r.date}</span>
-          </div>
-          <span class="sample-badge">ข้อมูลรีวิวตัวอย่าง</span>
-        </div>
-        <p style="font-size: 14px; font-style: italic; line-height: 1.6; margin: 0;">
-          "${r.text}"
-        </p>
-      </div>
-    `).join('');
-  }
-
   // Smooth scroll to reviews from rating click
   document.getElementById('reviews-scroll-link')?.addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' });
   });
 
-  // ============================================================
-  // 14. RELATED PRODUCTS ("สินค้าที่คุณอาจชอบ")
-  // ============================================================
-  const relatedGrid = document.getElementById('related-products-grid');
-  if (relatedGrid && window.getRelatedProducts) {
+  // Render Related Products
+  function renderRelatedProducts() {
+    const relatedGrid = document.getElementById('related-products-grid');
+    if (!relatedGrid || !window.getRelatedProducts) return;
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+    const getLoc = window.getLocalizedProduct || ((p) => p);
     const relatedList = window.getRelatedProducts(product.slug, 4);
-    relatedGrid.innerHTML = relatedList.map(rel => {
+
+    relatedGrid.innerHTML = relatedList.map(rawRel => {
+      const rel = getLoc(rawRel, isEn ? 'en' : 'th');
       const relImg = rel.colors[0]?.images[0] || '';
       return `
         <article class="glass-surface product-card" data-slug="${rel.slug}">
-          <a href="product.html?slug=${rel.slug}" class="product-card-top-link" aria-label="ดูรายละเอียด ${rel.name}" style="text-decoration: none; color: inherit; display: block;">
+          <a href="product.html?slug=${rel.slug}" class="product-card-top-link" aria-label="${isEn ? 'View details of ' + rel.name : 'ดูรายละเอียด ' + rel.name}" style="text-decoration: none; color: inherit; display: block;">
             <div class="product-image-container">
               ${rel.tagBadge ? `
                 <span class="product-tag-badge">
@@ -691,7 +646,7 @@
             <div class="product-rating">
               ${ICONS.star}
               <strong>${rel.rating.toFixed(1)}</strong>
-              <span>(${rel.reviewCount} รีวิว)</span>
+              <span>(${rel.reviewCount} ${isEn ? 'reviews' : 'รีวิว'})</span>
             </div>
             <h3 class="product-title">${rel.name}</h3>
           </a>
@@ -701,9 +656,9 @@
               ${rel.compareAtPrice ? `<span class="price-original">฿${rel.compareAtPrice.toLocaleString()}</span>` : ''}
               <span class="price-current">฿${rel.price.toLocaleString()}</span>
             </div>
-            <button type="button" class="btn btn-secondary btn-rel-add-cart" data-slug="${rel.slug}" aria-label="เพิ่ม ${rel.name} ลงในตะกร้า">
+            <button type="button" class="btn btn-secondary btn-rel-add-cart" data-slug="${rel.slug}" aria-label="${isEn ? 'Add ' + rel.name + ' to cart' : 'เพิ่ม ' + rel.name + ' ลงในตะกร้า'}">
               ${ICONS.cart}
-              เพิ่มลงตะกร้า
+              ${isEn ? 'Add to Cart' : 'เพิ่มลงตะกร้า'}
             </button>
           </div>
         </article>
@@ -727,6 +682,105 @@
         }
       });
     });
+  }
+
+  // Dynamic localization for all product details and tabs
+  function renderDynamicProductDetails() {
+    const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+    const getLoc = window.getLocalizedProduct || ((p) => p);
+    const locProd = getLoc(product, isEn ? 'en' : 'th');
+    const locColor = (locProd.colors && locProd.colors.find(c => c.key === activeColor.key)) || activeColor;
+
+    // Document title and meta
+    document.title = `${locProd.name} | WILDTRAIL`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', locProd.shortDesc);
+
+    // Breadcrumb
+    const bcCat = document.getElementById('breadcrumb-category');
+    if (bcCat) bcCat.textContent = locProd.category;
+    const bcTitle = document.getElementById('breadcrumb-title');
+    if (bcTitle) bcTitle.textContent = locProd.name;
+
+    // Header info
+    const catLabel = document.getElementById('product-category-label');
+    if (catLabel) catLabel.textContent = locProd.category;
+    const pTitle = document.getElementById('product-title');
+    if (pTitle) pTitle.textContent = locProd.name;
+    const revScroll = document.getElementById('reviews-scroll-link');
+    if (revScroll) revScroll.textContent = `(${locProd.reviewCount} ${isEn ? 'reviews' : 'รีวิว'})`;
+    const pShortDesc = document.getElementById('product-short-desc');
+    if (pShortDesc) pShortDesc.textContent = locProd.shortDesc;
+
+    // Color name label
+    const colorLabel = document.getElementById('selected-color-name');
+    if (colorLabel) colorLabel.textContent = locColor.label;
+
+    // Size name label
+    const sizeLabel = document.getElementById('selected-size-name');
+    if (sizeLabel && !activeSize) {
+      sizeLabel.textContent = isEn ? 'None selected' : 'ยังไม่ได้เลือก';
+    }
+
+    // Mobile sticky bar title
+    if (mobileBarTitle) mobileBarTitle.textContent = locProd.name;
+
+    // Tab 1: Details
+    const descEl = document.getElementById('tab-description-text');
+    if (descEl) descEl.textContent = locProd.description;
+    const featuresList = document.getElementById('tab-features-list');
+    if (featuresList && locProd.features) {
+      featuresList.innerHTML = locProd.features.map(f => `
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>${f}</span>
+        </li>
+      `).join('');
+    }
+
+    // Tab 2: Specs Table
+    const specsTableBody = document.querySelector('#tab-specs-table tbody');
+    if (specsTableBody && locProd.specs) {
+      specsTableBody.innerHTML = Object.entries(locProd.specs).map(([key, val]) => `
+        <tr>
+          <th>${key}</th>
+          <td>${val}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Reviews summary
+    const revScore = document.getElementById('reviews-summary-score');
+    if (revScore) revScore.textContent = locProd.rating.toFixed(1);
+    const summaryStars = document.getElementById('reviews-summary-stars');
+    if (summaryStars) summaryStars.innerHTML = Array(5).fill(ICONS.star).join('');
+    const revSumCount = document.getElementById('reviews-summary-count');
+    if (revSumCount) revSumCount.textContent = isEn ? `From ${locProd.reviewCount} reviews` : `จาก ${locProd.reviewCount} รีวิว`;
+
+    // Customer Reviews list
+    const reviewsContainer = document.getElementById('customer-reviews-list');
+    if (reviewsContainer && locProd.reviews) {
+      reviewsContainer.innerHTML = locProd.reviews.map(r => `
+        <div class="glass-surface customer-review-card">
+          <div class="review-meta-row">
+            <div>
+              <div style="display: flex; gap: 2px; color: #FBBF24; margin-bottom: 4px;">
+                ${Array(r.rating).fill(ICONS.star).join('')}
+              </div>
+              <strong style="font-size: 14px; display: block;">${r.author}</strong>
+              <span class="caption">${r.location} · ${r.date}</span>
+            </div>
+            <span class="sample-badge">${isEn ? 'Sample Review' : 'ข้อมูลรีวิวตัวอย่าง'}</span>
+          </div>
+          <p style="font-size: 14px; font-style: italic; line-height: 1.6; margin: 0;">
+            "${r.text}"
+          </p>
+        </div>
+      `).join('');
+    }
+
+    // Related products
+    renderRelatedProducts();
   }
 
   // ============================================================
@@ -796,14 +850,19 @@
         searchResults.innerHTML = '';
         return;
       }
-      const matches = window.WILDTRAIL_PRODUCTS.filter(p =>
-        p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
-      );
+      const isEn = window.WILDTRAIL && window.WILDTRAIL.getLang ? window.WILDTRAIL.getLang() === 'en' : false;
+      const getLoc = window.getLocalizedProduct || ((p) => p);
+      const matches = window.WILDTRAIL_PRODUCTS.filter(p => {
+        const lp = getLoc(p, isEn ? 'en' : 'th');
+        return lp.name.toLowerCase().includes(q) || lp.category.toLowerCase().includes(q) || p.name.toLowerCase().includes(q);
+      });
 
       if (matches.length === 0) {
-        searchResults.innerHTML = '<p class="caption" style="text-align: center; padding: 12px;">ไม่พบสินค้าที่ตรงกับการค้นหา</p>';
+        searchResults.innerHTML = `<p class="caption" style="text-align: center; padding: 12px;">${isEn ? 'No products found matching your search' : 'ไม่พบสินค้าที่ตรงกับการค้นหา'}</p>`;
       } else {
-        searchResults.innerHTML = matches.map(m => `
+        searchResults.innerHTML = matches.map(rawM => {
+          const m = getLoc(rawM, isEn ? 'en' : 'th');
+          return `
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.06); border-radius: 8px;">
             <a href="product.html?slug=${m.slug}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
               <img src="${m.colors[0]?.images[0] || ''}" alt="${m.name}" style="width: 36px; height: 45px; object-fit: cover; border-radius: 4px; background: #E9E8E6;">
@@ -813,20 +872,29 @@
               </div>
             </a>
             <a href="product.html?slug=${m.slug}" class="btn btn-secondary" style="min-height: 32px; padding: 4px 12px; font-size: 13px;">
-              ดูสินค้า
+              ${isEn ? 'View Gear' : 'ดูสินค้า'}
             </a>
           </div>
-        `).join('');
+        `}).join('');
       }
     });
   }
 
   // ============================================================
-  // 17. INITIALIZE PAGE
+  // 17. INITIALIZE PAGE & LANGUAGE EVENT LISTENER
   // ============================================================
+  renderDynamicProductDetails();
   renderColorSwatches();
   renderSizeButtons();
   updateGalleryImages();
   updateStockUI();
+
+  window.addEventListener('wildtrail:langchange', () => {
+    renderDynamicProductDetails();
+    renderColorSwatches();
+    renderSizeButtons();
+    updateGalleryImages();
+    updateStockUI();
+  });
 
 })();
